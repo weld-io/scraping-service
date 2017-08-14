@@ -38,5 +38,6 @@ Built on ScraperJS, Node.js, Express.
 	heroku config:set NODE_ENV=production
 
 	# PhantomJS: see also files .buildpacks and Aptfile
-	heroku stack:set cedar-14 # See https://github.com/srbartlett/heroku-buildpack-phantomjs-2.0
+	heroku stack:set cedar-14
+	heroku buildpacks:add --index 1 https://github.com/srbartlett/heroku-buildpack-phantomjs-2.0
 	heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nodejs
