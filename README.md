@@ -36,4 +36,5 @@ Built on ScraperJS, Node.js, Express.
 	# Set up and configure app
 	heroku create MYAPPNAME
 	heroku stack:set cedar-14 # See https://github.com/srbartlett/heroku-buildpack-phantomjs-2.0
+	heroku buildpacks:add https://github.com/ddollar/heroku-buildpack-multi
 	heroku config:set NODE_ENV=production
