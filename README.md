@@ -40,3 +40,4 @@ Built on ScraperJS, Node.js, Express.
 	# PhantomJS: see also files .buildpacks and Aptfile
 	heroku stack:set cedar-14 # See https://github.com/srbartlett/heroku-buildpack-phantomjs-2.0
 	heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nodejs
+
