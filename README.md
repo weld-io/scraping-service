@@ -40,5 +40,5 @@ Built on ScraperJS, Node.js, Express.
 	# PhantomJS: see also files .buildpacks and Aptfile
 	heroku stack:set cedar-14
 	heroku buildpacks:add --index 1 https://github.com/minted/heroku-buildpack-chrome-headless
-	#heroku buildpacks:add --index 2 https://github.com/heroku/heroku-buildpack-google-chrome
+	#heroku buildpacks:add --index 1 https://github.com/heroku/heroku-buildpack-google-chrome
 	heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nodejs
