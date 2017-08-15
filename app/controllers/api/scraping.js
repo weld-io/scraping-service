@@ -16,7 +16,8 @@ const scraping = {
 	scrapeChrome: function (req, res, next) {
 		const pageUrl = decodeURIComponent(req.query.url || 'https://www.linkedin.com/in/tomsoderlund/');
 		const pageSelector = decodeURIComponent(req.query.selector || 'body');
-		console.log(`Scrape: "${pageUrl}", "${pageSelector}"`);
+		const loadExtraTime = req.query.time || 0;
+		console.log(`Scrape: "${pageUrl}", "${pageSelector}", ${loadExtraTime} ms`);
 		const timeStart = Date.now();
 
 		const CDP = require('chrome-remote-interface');
@@ -45,7 +46,7 @@ const scraping = {
 						client.close();
 						res.json({ time: (timeFinish-timeStart), count: resultArray.length, results: resultArray });
 					});
-				}, 1000); // extra seconds to render Weld
+				}, loadExtraTime); // extra time before accessing DOM
 			});
 		}).on('error', (err) => {
 			console.error('Cannot connect to browser:', err);

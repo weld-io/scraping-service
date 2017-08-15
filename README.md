@@ -37,6 +37,11 @@ Results:
 
 	{ "time":1635, "count":59, "results":["Ask a Female Engineer: Thoughts on the Google Memo","ycombinator.com",...] }
 
+Notes:
+
+* `selector` is a JQuery style selector.
+* `time` (optional), e.g. `&time=5000` adds extra loading time before accessing DOM.
+
 
 ## Implementation
 
