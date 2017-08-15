@@ -1,6 +1,7 @@
 # Scraping Service
 
 **Scraping Service** is a REST API for scraping dynamic websites. It uses headless Chrome and Cheerio.
+
 ----------
 
 Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=github-scraping-service)), the #codefree web/app creation tool:
