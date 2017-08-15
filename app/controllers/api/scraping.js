@@ -8,43 +8,57 @@
 
 const express = require('express');
 const _ = require('lodash');
-const scraperjs = require('scraperjs');
 
 const helpers = require('../../config/helpers');
 
-//-------------
-
-const CDP = require('chrome-remote-interface');
-
-CDP((client) => {
-	// Extract used DevTools domains.
-	const {Page, Runtime} = client;
-
-	// Enable events on domains we are interested in.
-	Promise.all([
-		Page.enable()
-		]).then(() => {
-			return Page.navigate({url: 'https://www.linkedin.com/in/tomsoderlund/'});
-		});
-
-	// Evaluate outerHTML after page has loaded.
-	Page.loadEventFired(() => {
-		Runtime.evaluate({expression: 'document.body.outerHTML'}).then((result) => {
-			console.log(result.result.value);
-			client.close();
-		});
-	});
-}).on('error', (err) => {
-	console.error('Cannot connect to browser:', err);
-});
-
-//-------------
-
 const scraping = {
 
-	read: function (req, res, next) {
+	scrapeChrome: function (req, res, next) {
+		const pageUrl = decodeURIComponent(req.query.url || 'https://www.linkedin.com/in/tomsoderlund/');
+		const pageSelector = decodeURIComponent(req.query.selector || 'body');
+		console.log(`Scrape: "${pageUrl}", "${pageSelector}"`);
+		const timeStart = Date.now();
+
+		const CDP = require('chrome-remote-interface');
+
+		CDP((client) => {
+			// Extract used DevTools domains.
+			const {Page, Runtime} = client;
+
+			// Enable events on domains we are interested in.
+			Promise.all([
+				Page.enable()
+				]).then(() => {
+					return Page.navigate({ url: pageUrl });
+				});
+
+			// Evaluate outerHTML after page has loaded.
+			Page.loadEventFired(() => {
+				setTimeout(() => {
+					Runtime.evaluate({ expression: 'document.body.outerHTML' }).then((result) => {
+						const timeFinish = Date.now();
+						const cheerio = require('cheerio');
+						const $ = cheerio.load(result.result.value);
+						const resultArray = $(pageSelector).map(function(i, el) {
+							// this === el
+							return $(this).text();
+						}).get();
+						console.log(resultArray);
+						client.close();
+						res.json({ results: resultArray, time: (timeFinish-timeStart) });
+					});
+				}, 1000); // extra seconds to render Weld
+			});
+		}).on('error', (err) => {
+			console.error('Cannot connect to browser:', err);
+			res.status(400).json({ error: err });
+		});
+	},
+
+	scrapePhantomJS: function (req, res, next) {
 		const url = decodeURIComponent(req.query.url);
 		const selector = decodeURIComponent(req.query.selector);
+		console.log(`Scrape: "${url}", "${selector}"`);
 
 		const parseFunction = function ($) {
 			//const selector = decodeURIComponent(req.query.selector);
@@ -55,8 +69,7 @@ const scraping = {
 		}
 		const parseFunction2 = parseFunction.bind(null, selector);
 
-		console.log(`Scrape: "${url}", "${selector}"`);
-
+		const scraperjs = require('scraperjs');
 		try {
 			scraperjs.DynamicScraper.create(url)
 				.scrape(parseFunction)
@@ -79,6 +92,6 @@ module.exports = function (app, config) {
 	app.use('/', router);
 
 	// CRUD routes: Account
-	router.get('/api/scrape', scraping.read);
+	router.get('/api/scrape', scraping.scrapeChrome);
 
 };
