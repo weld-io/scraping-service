@@ -1,7 +1,7 @@
 {
   "name": "scraping-service",
   "version": "0.1.0",
-  "description": "Scraping Service is a REST API for scraping dynamic websites using ScraperJS.",
+  "description": "Scraping Service is a REST API for scraping dynamic websites.",
   "author": "Weld (www.weld.io)",
   "license": "MIT",
   "main": "app/server.js",
