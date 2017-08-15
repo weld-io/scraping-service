@@ -45,7 +45,7 @@ const scraping = {
 						}).get();
 						console.log(resultArray);
 						client.close();
-						res.json({ results: resultArray, time: (timeFinish-timeStart) });
+						res.json({ count: resultArray.length, results: resultArray, time: (timeFinish-timeStart) });
 					});
 				}, 1000); // extra seconds to render Weld
 			});
