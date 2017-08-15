@@ -20,14 +20,13 @@ const scraping = {
 		const timeStart = Date.now();
 
 		const CDP = require('chrome-remote-interface');
-
 		CDP((client) => {
 			// Extract used DevTools domains.
 			const {Page, Runtime} = client;
 
 			// Enable events on domains we are interested in.
 			Promise.all([
-				Page.enable()
+					Page.enable()
 				]).then(() => {
 					return Page.navigate({ url: pageUrl });
 				});
@@ -43,9 +42,8 @@ const scraping = {
 							// this === el
 							return $(this).text();
 						}).get();
-						console.log(resultArray);
 						client.close();
-						res.json({ count: resultArray.length, results: resultArray, time: (timeFinish-timeStart) });
+						res.json({ time: (timeFinish-timeStart), count: resultArray.length, results: resultArray });
 					});
 				}, 1000); // extra seconds to render Weld
 			});
@@ -56,22 +54,21 @@ const scraping = {
 	},
 
 	scrapePhantomJS: function (req, res, next) {
-		const url = decodeURIComponent(req.query.url);
-		const selector = decodeURIComponent(req.query.selector);
-		console.log(`Scrape: "${url}", "${selector}"`);
+		const pageUrl = decodeURIComponent(req.query.url);
+		const pageSelector = decodeURIComponent(req.query.selector);
+		console.log(`Scrape: "${pageUrl}", "${pageSelector}"`);
 
 		const parseFunction = function ($) {
-			//const selector = decodeURIComponent(req.query.selector);
-			console.log('parseFunction', selector);
-			return $(selector).map(function() {
-				return $(this).text() + '2';
+			//const pageSelector = decodeURIComponent(req.query.selector);
+			console.log('parseFunction', pageSelector);
+			return $(pageSelector).map(function() {
+				return $(this).text();
 			}).get();
 		}
-		const parseFunction2 = parseFunction.bind(null, selector);
 
 		const scraperjs = require('scraperjs');
 		try {
-			scraperjs.DynamicScraper.create(url)
+			scraperjs.DynamicScraper.create(pageUrl)
 				.scrape(parseFunction)
 				.then(function (results) {
 					//console.log(results);
