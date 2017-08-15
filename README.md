@@ -34,7 +34,7 @@ Do a HTTP GET:
 
 Results:
 
-	{ "count":59, "results":["Ask a Female Engineer: Thoughts on the Google Memo","ycombinator.com",...], "time":1635 }
+	{ "time":1635, "count":59, "results":["Ask a Female Engineer: Thoughts on the Google Memo","ycombinator.com",...] }
 
 
 ## Implementation
@@ -44,12 +44,23 @@ Built on Node.js, Express, headless Chrome, Cheerio.
 
 ## Deploying on Heroku
 
+Stack: **Heroku-16**
+
+Buildpacks:
+
+	1. https://github.com/heroku/heroku-buildpack-google-chrome
+	2. heroku/nodejs
+
+Procfile:
+
+	web: /app/.apt/usr/bin/google-chrome & node app/server.js
+
+### Heroku set-up
+
 	# Set up and configure app
 	heroku create MYAPPNAME
 	heroku config:set NODE_ENV=production
 
-	# PhantomJS: see also files .buildpacks and Aptfile
-	heroku stack:set cedar-14
-	#heroku buildpacks:add --index 1 https://github.com/heroku/heroku-buildpack-google-chrome
-	heroku buildpacks:add --index 1 https://github.com/minted/heroku-buildpack-chrome-headless
-	heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nodejs
+	# Stack and Buildpacks
+	heroku stack:set heroku-16
+	heroku buildpacks:add --index 1 https://github.com/heroku/heroku-buildpack-google-chrome
