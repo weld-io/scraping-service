@@ -8,8 +8,18 @@
 
 const express = require('express');
 const _ = require('lodash');
+const cheerio = require('cheerio');
 
 const helpers = require('../../config/helpers');
+
+const parseDOM = (domString, pageSel, complete) => {
+	const $ = cheerio.load(domString);
+	const resultArray = $(pageSel).map(function(i, el) {
+		// this === el
+		return complete ? $(this).toString() : $(this).text();
+	}).get();
+	return resultArray;
+};
 
 const scraping = {
 
@@ -38,15 +48,14 @@ const scraping = {
 			Page.loadEventFired(() => {
 				setTimeout(() => {
 					Runtime.evaluate({ expression: 'document.body.outerHTML' }).then((result) => {
+						const selectorsArray = pageSelector.split(',');
+						const resultsObj = selectorsArray.map((sel) => {
+							const resultArray = parseDOM(result.result.value, sel, completeResults);
+							return { selector: sel, count: resultArray.length, items: resultArray };
+						});
 						const timeFinish = Date.now();
-						const cheerio = require('cheerio');
-						const $ = cheerio.load(result.result.value);
-						const resultArray = $(pageSelector).map(function(i, el) {
-							// this === el
-							return completeResults ? $(this).toString() : $(this).text();
-						}).get();
 						client.close();
-						res.json({ time: (timeFinish-timeStart), count: resultArray.length, results: resultArray });
+						res.json({ time: (timeFinish-timeStart), results: resultsObj });
 					});
 				}, loadExtraTime); // extra time before accessing DOM
 			});
