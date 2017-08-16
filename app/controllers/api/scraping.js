@@ -17,8 +17,10 @@ const scraping = {
 		const pageUrl = decodeURIComponent(req.query.url || 'https://www.linkedin.com/in/tomsoderlund/');
 		const pageSelector = decodeURIComponent(req.query.selector || 'body');
 		const loadExtraTime = req.query.time || 0;
-		console.log(`Scrape: "${pageUrl}", "${pageSelector}", ${loadExtraTime} ms`);
+		const completeResults = req.query.complete || false;
 		const timeStart = Date.now();
+
+		console.log(`Scrape: "${pageUrl}", "${pageSelector}", ${loadExtraTime} ms`);
 
 		const CDP = require('chrome-remote-interface');
 		CDP((client) => {
@@ -41,7 +43,7 @@ const scraping = {
 						const $ = cheerio.load(result.result.value);
 						const resultArray = $(pageSelector).map(function(i, el) {
 							// this === el
-							return $(this).text();
+							return completeResults ? $(this).toString() : $(this).text();
 						}).get();
 						client.close();
 						res.json({ time: (timeFinish-timeStart), count: resultArray.length, results: resultArray });

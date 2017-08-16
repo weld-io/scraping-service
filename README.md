@@ -39,8 +39,10 @@ Results:
 
 Notes:
 
-* `selector` is a JQuery style selector.
-* `time` (optional), e.g. `&time=5000` adds extra loading time before accessing DOM.
+* `url` (required)
+* `selector` is a JQuery style selector, defaults to `"body"`.
+* `time` e.g. `&time=5000` adds extra loading time before accessing DOM.
+* `complete` set to `true` to get full DOM nodes, not just text contents.
 
 
 ## Implementation
