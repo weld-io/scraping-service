@@ -1,10 +1,10 @@
-var glob = require('glob');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var compress = require('compression');
-//var cookieParser = require('cookie-parser');
-//var methodOverride = require('method-override');
-//var cors = require('cors');
+const glob = require('glob');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const compress = require('compression');
+//const cookieParser = require('cookie-parser');
+//const methodOverride = require('method-override');
+const cors = require('cors');
 
 module.exports = function (app, config) {
 
@@ -16,7 +16,7 @@ module.exports = function (app, config) {
 	app.use(compress());
 	//app.use(cookieParser());
 	//app.use(methodOverride());
-	//app.use(cors());
+	app.use(cors());
 
 	// Routing
 
