@@ -24,7 +24,7 @@ const parseDOM = (domString, pageSel, complete) => {
 const scraping = {
 
 	scrapeChrome: function (req, res, next) {
-		const pageUrl = decodeURIComponent(req.query.url || 'https://www.linkedin.com/in/tomsoderlund/');
+		const pageUrl = decodeURIComponent(req.query.url);
 		const pageSelector = decodeURIComponent(req.query.selector || 'body');
 		const loadExtraTime = req.query.time || 0;
 		const completeResults = req.query.complete || false;
