@@ -14,7 +14,8 @@ const helpers = require('../../config/helpers');
 
 const parseDOM = (domString, pageSel, complete, deep) => {
 
-	const getNodeReference = $node => ($node[0].name) + ($node.attr('class') ? '.'+$node.attr('class').replace(/ /g, '.') : '') + ($node.attr('id') ? '#'+$node.attr('id') : '');
+	// Use _ instead of . and $ instead of # to allow for easier JavaScript parsing
+	const getNodeReference = $node => ($node[0].name) + ($node.attr('class') ? '_'+$node.attr('class').replace(/ /g, '_') : '') + ($node.attr('id') ? '$'+$node.attr('id') : '');
 
 	const traverseChildren = function (parentObj, obj, i, elem) {
 		const $node = $(elem);
