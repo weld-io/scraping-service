@@ -12,11 +12,50 @@ const cheerio = require('cheerio');
 
 const helpers = require('../../config/helpers');
 
-const parseDOM = (domString, pageSel, complete) => {
+const parseDOM = (domString, pageSel, complete, deep) => {
+
+	const getNodeReference = $node => ($node[0].name) + ($node.attr('class') ? '.'+$node.attr('class').replace(/ /g, '.') : '') + ($node.attr('id') ? '#'+$node.attr('id') : '');
+
+	const traverseChildren = function (parentObj, obj, i, elem) {
+		const $node = $(elem);
+		const nodeRef = getNodeReference($node);
+		// Has children
+		if ($node.children().length > 0) {
+			obj[nodeRef] = obj[nodeRef] || {};
+			// Has children AND text: use '.$text='
+			if ($node.text().length > 0) {
+				obj[nodeRef].$text = $node.text();
+			}
+			// Traverse the children
+			$node.children().each(traverseChildren.bind(undefined, obj, obj[nodeRef]));
+		}
+		// Has only text
+		else {
+			obj[nodeRef] = $node.text();
+		}
+		// Delete parent.$text if same as this
+		if ($node.text() === _.get(parentObj, '$text')) {
+			delete parentObj.$text;
+		}
+	};
+
 	const $ = cheerio.load(domString);
-	const resultArray = $(pageSel).map(function(i, el) {
+	const resultArray = $(pageSel).map(function (i, el) {
 		// this === el
-		return complete ? $(this).toString() : $(this).text();
+		if (complete) {
+			// Complete DOM nodes
+			return $(this).toString();
+		}
+		else if (deep) {
+			// Deep objects
+			let deepObj = {};
+			traverseChildren(undefined, deepObj, undefined, this);
+			return deepObj;
+		}	
+		else {
+			// Shallow text
+			return $(this).text();
+		}
 	}).get();
 	return resultArray;
 };
@@ -27,6 +66,7 @@ const scraping = {
 		const pageUrl = decodeURIComponent(req.query.url);
 		const pageSelector = decodeURIComponent(req.query.selector || 'body');
 		const loadExtraTime = req.query.time || 0;
+		const deepResults = req.query.deep || false;
 		const completeResults = req.query.complete || false;
 		const timeStart = Date.now();
 
@@ -50,7 +90,7 @@ const scraping = {
 					Runtime.evaluate({ expression: 'document.body.outerHTML' }).then((result) => {
 						const selectorsArray = pageSelector.split(',');
 						const resultsObj = selectorsArray.map((sel) => {
-							const resultArray = parseDOM(result.result.value, sel, completeResults);
+							const resultArray = parseDOM(result.result.value, sel, completeResults, deepResults);
 							return { selector: sel, count: resultArray.length, items: resultArray };
 						});
 						const timeFinish = Date.now();
