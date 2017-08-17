@@ -1,6 +1,6 @@
 # Scraping Service
 
-**Scraping Service** is a REST API for scraping dynamic websites using Node.js, headless Chrome and Cheerio..
+**Scraping Service** is a REST API for scraping dynamic websites using Node.js, headless Chrome and Cheerio.
 
 ----------
 
