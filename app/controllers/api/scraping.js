@@ -65,34 +65,6 @@ const scraping = {
 		});
 	},
 
-	scrapePhantomJS: function (req, res, next) {
-		const pageUrl = decodeURIComponent(req.query.url);
-		const pageSelector = decodeURIComponent(req.query.selector);
-		console.log(`Scrape: "${pageUrl}", "${pageSelector}"`);
-
-		const parseFunction = function ($) {
-			//const pageSelector = decodeURIComponent(req.query.selector);
-			console.log('parseFunction', pageSelector);
-			return $(pageSelector).map(function() {
-				return $(this).text();
-			}).get();
-		}
-
-		const scraperjs = require('scraperjs');
-		try {
-			scraperjs.DynamicScraper.create(pageUrl)
-				.scrape(parseFunction)
-				.then(function (results) {
-					//console.log(results);
-					res.json({ results: results });
-				});
-		}
-		catch (err) {
-			res.status(400).json({ error: err });
-		}
-
-	},
-
 }
 
 module.exports = function (app, config) {
@@ -100,7 +72,6 @@ module.exports = function (app, config) {
 	const router = express.Router();
 	app.use('/', router);
 
-	// CRUD routes: Account
 	router.get('/api/scrape', scraping.scrapeChrome);
 
 };
