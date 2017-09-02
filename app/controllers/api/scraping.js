@@ -80,10 +80,10 @@ const scraping = {
 
 			// Enable events on domains we are interested in.
 			Promise.all([
-					Page.enable()
-				]).then(() => {
-					return Page.navigate({ url: pageUrl });
-				});
+				Page.enable()
+			]).then(() => {
+				return Page.navigate({ url: pageUrl });
+			});
 
 			// Evaluate outerHTML after page has loaded.
 			Page.loadEventFired(() => {
