@@ -11,7 +11,12 @@ Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=githu
 
 ## How to Run
 
-Just start with:
+Start Chrome in headless mode first:
+
+ 	# Mac OS X
+ 	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222
+
+Then start Scraping Service with:
 
 	npm run-script dev # development
 
