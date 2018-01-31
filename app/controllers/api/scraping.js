@@ -9,6 +9,7 @@
 const express = require('express');
 const _ = require('lodash');
 const cheerio = require('cheerio');
+const htmlMetadata = require('html-metadata');
 
 const helpers = require('../../config/helpers');
 
@@ -104,6 +105,19 @@ const scrapeChrome = function (req, res, next) {
 	});
 };
 
+const scrapeMetaData = function (req, res, next) {
+	const pageUrl = decodeURIComponent(req.query.url);
+
+	console.log(`Scrape metadata: "${pageUrl}"`);
+	htmlMetadata(pageUrl)
+		.then(function (metadata) {
+			res.status(200).json(metadata);
+		})
+		.catch(function (getErr) {
+			console.error(getErr);
+			res.status(getErr.status || 400).json(getErr);
+		});
+};
 
 // Routes
 
@@ -113,5 +127,6 @@ module.exports = function (app, config) {
 	app.use('/', router);
 
 	router.get('/api/scrape', scrapeChrome);
+	router.get('/api/meta', scrapeMetaData);
 
 };

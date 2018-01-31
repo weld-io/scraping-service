@@ -34,6 +34,8 @@ Server will default to **http://localhost:3036**
 
 ## How to Use
 
+### Full scrape
+
 Do a HTTP GET:
 
 	http://localhost:3036/api/scrape?url=https://news.ycombinator.com&selector=.title+a
@@ -49,6 +51,49 @@ Parameters:
 * `time` e.g. `&time=5000` adds extra loading time before accessing DOM.
 * `deep` set to `true` to get recursive object trees, not just first-level text contents.
 * `complete` set to `true` to get full DOM nodes, not just text contents.
+
+### Metadata
+
+	http://localhost:3036/api/meta?url=https://www.weld.io
+
+Results:
+
+	{
+		"general":{
+			"appleTouchIcons":[
+				{
+					"href":"/images/apple-touch-icon.png"
+				}
+			],
+			"icons":[
+				{
+					"href":"/images/apple-touch-icon.png"
+				}
+			],
+			"canonical":"http://www.weld.io/",
+			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+			"title":"Weld - The Visual CMS"
+		},
+		"openGraph":{
+			"site_name":"Weld - The Visual CMS",
+			"title":"Weld - The Visual CMS",
+			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+			"locale":"en_US",
+			"url":"http://www.weld.io/",
+			"image":{
+				"url":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
+			}
+		},
+		"twitter":{
+			"title":"Weld - The Visual CMS",
+			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+			"card":"summary",
+			"url":"http://www.weld.io/",
+			"site":"@Weld_io",
+			"creator":"@Weld_io",
+			"image":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
+		}
+	}
 
 
 ## Implementation
