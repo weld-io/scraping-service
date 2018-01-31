@@ -34,7 +34,7 @@ Server will default to **http://localhost:3036**
 
 ## How to Use
 
-### Full scrape
+### Scrape contents
 
 Do a HTTP GET:
 
@@ -52,13 +52,14 @@ Parameters:
 * `deep` set to `true` to get recursive object trees, not just first-level text contents.
 * `complete` set to `true` to get full DOM nodes, not just text contents.
 
-### Metadata
+### Scrape metadata
 
 	http://localhost:3036/api/meta?url=https://www.weld.io
 
 Results:
 
 	{
+		"url":"https://www.weld.io",
 		"general":{
 			"appleTouchIcons":[
 				{
@@ -98,7 +99,7 @@ Results:
 
 ## Implementation
 
-Built on Node.js, Express, headless Chrome, Cheerio.
+Built on Node.js, Express, headless Chrome, Cheerio, html-metadata.
 
 
 ## Deploying on Heroku
