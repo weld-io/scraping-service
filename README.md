@@ -47,7 +47,7 @@ Results:
 Parameters:
 
 * `url` (required)
-* `selector` is a JQuery style selector, defaults to `body`. You can use multiple selectors separated by comma, which leads to more items in the `results` array.
+* `selector` is a JQuery style selector, defaults to `body`. You can use multiple selectors separated by comma, which leads to more items in the `results` array. Use `$` instead of `#` for element ID selectors.
 * `time` e.g. `&time=5000` adds extra loading time before accessing DOM.
 * `deep` set to `true` to get recursive object trees, not just first-level text contents.
 * `complete` set to `true` to get full DOM nodes, not just text contents.

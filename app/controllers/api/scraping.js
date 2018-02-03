@@ -64,7 +64,8 @@ const parseDOM = (domString, pageSel, complete, deep) => {
 
 const scrapeChrome = function (req, res, next) {
 	const pageUrl = decodeURIComponent(req.query.url);
-	const pageSelector = decodeURIComponent(req.query.selector || 'body');
+	// Use $ instead of # to allow for easier URL parsing
+	const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#');
 	const loadExtraTime = req.query.time || 0;
 	const deepResults = req.query.deep || false;
 	const completeResults = req.query.complete || false;

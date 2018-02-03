@@ -1,6 +1,6 @@
 {
   "name": "scraping-service",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Scraping Service is a REST API for scraping dynamic websites using Node.js, headless Chrome and Cheerio.",
   "author": "Weld (www.weld.io)",
   "license": "MIT",
