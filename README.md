@@ -104,8 +104,9 @@ Results:
 
 Results:
 
-	// Domain, Title, Description, Alexa ranking
-	http://www.microsoft.com	Microsoft Corporation	Get product information, support, and news from Microsoft.	43
+	// Domain, Title, Description, Shortname, Alexa ranking
+	http://www.microsoft.com	Microsoft Corporation	Get product information, support, and news from Microsoft.	Microsoft	43
+
 
 ## Implementation
 

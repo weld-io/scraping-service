@@ -16,6 +16,9 @@ const async = require('async');
 const fetch = require('node-fetch');
 const htmlMetadata = require('html-metadata');
 
+const ALL_LINEBREAKS = /(\r\n\t|\n|\r\t)/gm;
+const ALL_TABS = /(\t)/gm;
+
 const openFile = function (filename, cb) {
 	fs.readFile(filename, 'utf8', function (err, data) {
 		if (err) {
@@ -36,7 +39,7 @@ const lookupAlexaInfo = function (domain, cb) {
 		.then(results => results.json())
 		.then(data => {
 			const rankingRaw = _.get(data, 'results.0.items.0.span_span-col_last.div_rank-row.span_globleRank.span_col-pad.div.strong_metrics-data_align-vmiddle', '');
-			const rankingFixed = parseInt(rankingRaw.replace(/(\r\n\t|\n|\r\t)/gm, '').replace(/\,/, '').replace(/\ /, ''));
+			const rankingFixed = parseInt(rankingRaw.replace(ALL_LINEBREAKS, '').replace(/\,/, '').replace(/\ /, ''));
 			const rankingFixedNotNaN = isNaN(rankingFixed) ? '' : rankingFixed;
 			if (cb) cb(null, { ranking: rankingFixedNotNaN });
 		});
@@ -48,16 +51,17 @@ const lookupSiteTitle = function (domain, cb) {
 	htmlMetadata(newUrl, (err, data) => {
 		const newData = {
 			url: newUrl,
-			title: _.get(data, 'general.title', ''),
-			description: _.get(data, 'general.description', ''),
+			shortName: _.capitalize(newUrl.split('.')[1]),
+			title: _.get(data, 'general.title', '').replace(ALL_LINEBREAKS, '').replace(ALL_TABS, ''),
+			description: _.get(data, 'general.description', '').replace(ALL_LINEBREAKS, '').replace(ALL_TABS, ''),
 		}
-		cb(err, newData);
+		cb(null, newData); // even if err, don't propagate it
 	});
 };
 
 const lookupAll = function (domain, cb) {
 	async.parallel({
-			title: lookupSiteTitle.bind(undefined, domain),
+			metadata: lookupSiteTitle.bind(undefined, domain),
 			alexa: lookupAlexaInfo.bind(undefined, domain),
 		},
 		// When all done
@@ -79,7 +83,8 @@ const processDomains = function (inputFilename, outputFilename='output.tsv') {
 			// When all done
 			function (err, results) {
 				const siteText = _.reduce(results, function (memo, siteInfo) {
-					return memo + `${siteInfo.title.url}\t${siteInfo.title.title}\t${siteInfo.title.description}\t${siteInfo.alexa.ranking}\n`;
+					const alexaRanking = _.get(siteInfo, 'alexa.ranking', '');
+					return memo + `${siteInfo.metadata.url}\t${siteInfo.metadata.title}\t${siteInfo.metadata.description}\t${siteInfo.metadata.shortName}\t${alexaRanking}\n`;
 				}, '');
 				console.log(`Done! %d results`, results.length, {err});
 				fs.writeFile(outputFilename, siteText)
