@@ -40,11 +40,14 @@ const lookupAlexaInfo = function (domain, cb) {
 		.then(results => results.json())
 		.then(data => {
 			const rankingRaw = _.get(data, 'results.0.items.0.span_span-col_last.div_rank-row.span_globleRank.span_col-pad.div.strong_metrics-data_align-vmiddle', '');
-			const rankingFixed = parseInt(rankingRaw.replace(ALL_LINEBREAKS, '').replace(/\,/, '').replace(/\ /, ''));
+			const rankingFixed = parseInt(rankingRaw.replace(ALL_LINEBREAKS, '').replace(/\,/g, '').replace(/\ /g, ''));
 			const rankingFixedNotNaN = isNaN(rankingFixed) ? '' : rankingFixed;
 			if (cb) cb(null, { ranking: rankingFixedNotNaN });
 		})
-		.catch(err => cb(null));
+		.catch(err => {
+			console.error(`Alexa error:`, err);
+			cb(null)
+		});
 };
 
 const lookupSiteTitle = function (domain, cb) {
