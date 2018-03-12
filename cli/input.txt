@@ -1,0 +1,4 @@
+google.com
+microsoft.com
+amazon.com
+apple.com

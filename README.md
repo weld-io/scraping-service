@@ -97,6 +97,16 @@ Results:
 	}
 
 
+## Command-line interface
+
+	cd cli
+	node lookup_domains.js input.txt output.tsv
+
+Results:
+
+	// Domain, Title, Description, Alexa ranking
+	http://www.microsoft.com	Microsoft Corporation	Get product information, support, and news from Microsoft.	43
+
 ## Implementation
 
 Built on Node.js, Express, headless Chrome, Cheerio, html-metadata.
