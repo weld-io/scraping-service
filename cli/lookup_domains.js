@@ -34,6 +34,7 @@ const openFile = function (filename, cb) {
 const completeUrl = (url) => (!_.includes(url, 'http') ? 'http://' : '') + (!_.includes(url, 'www.') ? 'www.' : '') + url;
 
 const lookupAlexaInfo = function (domain, cb) {
+	//console.log(`lookupAlexaInfo: ${domain}`);
 	const searchUrl = `https://scraping-service.herokuapp.com/api/scrape?url=https://www.alexa.com/siteinfo/${domain}&selector=$traffic-rank-content+.last&deep=true`;
 	fetch(searchUrl)
 		.then(results => results.json())
@@ -42,11 +43,12 @@ const lookupAlexaInfo = function (domain, cb) {
 			const rankingFixed = parseInt(rankingRaw.replace(ALL_LINEBREAKS, '').replace(/\,/, '').replace(/\ /, ''));
 			const rankingFixedNotNaN = isNaN(rankingFixed) ? '' : rankingFixed;
 			if (cb) cb(null, { ranking: rankingFixedNotNaN });
-		});
+		})
+		.catch(err => cb(null));
 };
 
 const lookupSiteTitle = function (domain, cb) {
-	console.log(`lookupSiteTitle: ${domain}`);
+	console.log(`Domain: ${domain}`);
 	const newUrl = completeUrl(domain);
 	htmlMetadata(newUrl, (err, data) => {
 		const newData = {
