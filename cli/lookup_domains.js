@@ -31,7 +31,7 @@ const openFile = function (filename, cb) {
 	});
 };
 
-const completeUrl = (url) => (!_.includes(url, 'http') ? 'http://' : '') + (!_.includes(url, 'www.') ? 'www.' : '') + url;
+const completeUrl = (url) => ((!_.includes(url, 'http') ? 'http://' : '') + (!_.includes(url, 'www.') ? 'www.' : '') + url).replace('www.http://', 'http://www.');
 
 const lookupAlexaInfo = function (domain, cb) {
 	//console.log(`lookupAlexaInfo: ${domain}`);
