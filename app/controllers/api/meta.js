@@ -1,6 +1,6 @@
 //
-// Name:    scraping.js
-// Purpose: Controller and routing for scraping (Account has Plans)
+// Name:    meta.js
+// Purpose: Controller and routing for metadata
 // Creator: Tom Söderlund
 //
 

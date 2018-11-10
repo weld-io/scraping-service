@@ -1,6 +1,6 @@
 //
-// Name:    scraping.js
-// Purpose: Controller and routing for scraping (Account has Plans)
+// Name:    scrape.js
+// Purpose: Controller and routing for scraping
 // Creator: Tom Söderlund
 //
 

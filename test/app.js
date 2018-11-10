@@ -30,6 +30,18 @@ test('Test /api/metadata', function (assert) {
 	);
 });
 
+test('Test /api/page', function (assert) {
+	const app = require('../app/app');
+	async.waterfall([
+			(cb) => request(app).get('/api/page?url=http://www.tomsoderlund.com').expect(200, cb),
+			(results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results); },
+			(results, cb) => { assert.ok(results.body.content.indexOf('Tom Söderlund\'s website') !== -1, 'Page content contains “Tom Söderlund\'s website”'); cb(null, results); },
+		],
+		(err, results) => {
+			assert.end();
+		}
+	);
+});
 
 // https://github.com/substack/tape
 

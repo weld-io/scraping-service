@@ -13,8 +13,8 @@ Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=githu
 
 Start Chrome in headless mode first:
 
- 	# Mac OS X
- 	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222
+	# Mac OS X
+	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222
 
 Then start Scraping Service with:
 
@@ -34,7 +34,7 @@ Server will default to **http://localhost:3036**
 
 ## How to Use
 
-### Scrape contents
+### Scrape DOM
 
 Do a HTTP GET:
 
@@ -51,6 +51,23 @@ Parameters:
 * `time` e.g. `&time=5000` adds extra loading time before accessing DOM.
 * `deep` set to `true` to get recursive object trees, not just first-level text contents.
 * `complete` set to `true` to get full DOM nodes, not just text contents.
+
+### Scrape page content
+
+	http://localhost:3036/api/page?url=https://www.weld.io
+
+Results:
+
+	{
+		"url": "http://www.tomsoderlund.com",
+		"length": 13560,
+		"content": "<html>...</html>"
+	}
+
+Parameters:
+
+* `url` (required)
+* `time` e.g. `&time=5000` adds extra loading time before accessing page content. Default is 1000.
 
 ### Scrape metadata
 
@@ -99,7 +116,7 @@ Results:
 
 ## Implementation
 
-Built on Node.js, Express, headless Chrome, Cheerio, html-metadata.
+Built on Node.js, Express, Puppeteer, headless Chrome, Cheerio, html-metadata.
 
 
 ## Deploying on Heroku
