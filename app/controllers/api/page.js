@@ -42,6 +42,7 @@ const scrapePuppeteer = async function (req, res, next) {
 const scrapeChrome = function (req, res, next) {
   const pageUrl = decodeURIComponent(req.query.url)
   const loadExtraTime = req.query.time || 100
+  const domElement = req.query.bodyOnly ? 'document.body.outerHTML' : 'document.documentElement.outerHTML'
 
   console.log(`Scrape: "${pageUrl}", ${loadExtraTime} ms`)
 
@@ -60,8 +61,7 @@ const scrapeChrome = function (req, res, next) {
     // Evaluate outerHTML after page has loaded.
     Page.loadEventFired(() => {
       setTimeout(() => {
-        // body: document.body.outerHTML
-        Runtime.evaluate({ expression: 'document.documentElement.outerHTML' }).then(response => {
+        Runtime.evaluate({ expression: domElement }).then(response => {
           client.close()
           res.json({
             url: pageUrl,

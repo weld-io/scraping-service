@@ -80,6 +80,7 @@ Parameters:
 
 * `url` (required)
 * `time` e.g. `&time=2000` adds extra loading time before accessing page content. Default is 100.
+* `bodyOnly=true` skips the head of the page
 
 ### Scrape metadata
 
