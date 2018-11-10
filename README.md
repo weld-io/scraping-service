@@ -18,18 +18,18 @@ Start Chrome in headless mode first:
 
 Then start Scraping Service with:
 
-	npm run-script dev # development
+	yarn dev # development
 
 or
 
-	npm start # production
+	yarn start # production
 
 Server will default to **http://localhost:3036**
 
 
 ## How to Test
 
-	npm test
+	yarn test
 
 
 ## How to Use
