@@ -60,7 +60,8 @@ const scrapeChrome = function (req, res, next) {
     // Evaluate outerHTML after page has loaded.
     Page.loadEventFired(() => {
       setTimeout(() => {
-        Runtime.evaluate({ expression: 'document.body.outerHTML' }).then(response => {
+        // body: document.body.outerHTML
+        Runtime.evaluate({ expression: 'document.documentElement.outerHTML' }).then(response => {
           client.close()
           res.json({
             url: pageUrl,

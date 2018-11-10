@@ -35,6 +35,7 @@ test('Test /api/page', function (assert) {
   async.waterfall([
     (cb) => request(app).get('/api/page?url=http://www.tomsoderlund.com').expect(200, cb),
     (results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results) },
+    (results, cb) => { assert.ok(results.body.length > 12000, 'Page size is more than 12000 characters'); cb(null, results) },
     (results, cb) => { assert.ok(results.body.content.indexOf('Tom Söderlund\'s website') !== -1, 'Page content contains “Tom Söderlund\'s website”'); cb(null, results) }
   ],
   (err, results) => {
