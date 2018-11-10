@@ -7,10 +7,7 @@
 'use strict'
 
 const express = require('express')
-const _ = require('lodash')
 const puppeteer = require('puppeteer')
-
-const helpers = require('../../config/helpers')
 
 const scrapePuppeteer = async function (req, res, next) {
   const pageUrl = decodeURIComponent(req.query.url)
@@ -34,62 +31,58 @@ const scrapePuppeteer = async function (req, res, next) {
       url: pageUrl,
       length: documentHTML.length,
       content: documentHTML
-    })    
-  }
-  catch (err) {
-    console.error({err}, Object.keys(err))
+    })
+  } catch (err) {
+    console.error({ err }, Object.keys(err))
     const statusCode = 400
     res.status(statusCode).json({ statusCode, message: err.toString() })
   }
-
 }
 
 const scrapeChrome = function (req, res, next) {
-  const pageUrl = decodeURIComponent(req.query.url);
-  const loadExtraTime = req.query.time || 100;
+  const pageUrl = decodeURIComponent(req.query.url)
+  const loadExtraTime = req.query.time || 100
 
-  console.log(`Scrape: "${pageUrl}", ${loadExtraTime} ms`);
+  console.log(`Scrape: "${pageUrl}", ${loadExtraTime} ms`)
 
-  const CDP = require('chrome-remote-interface');
+  const CDP = require('chrome-remote-interface')
   CDP((client) => {
     // Extract used DevTools domains.
-    const {Page, Runtime} = client;
+    const { Page, Runtime } = client
 
     // Enable events on domains we are interested in.
     Promise.all([
       Page.enable()
     ]).then(() => {
-      return Page.navigate({ url: pageUrl });
-    });
+      return Page.navigate({ url: pageUrl })
+    })
 
     // Evaluate outerHTML after page has loaded.
     Page.loadEventFired(() => {
       setTimeout(() => {
         Runtime.evaluate({ expression: 'document.body.outerHTML' }).then(response => {
-          client.close();
+          client.close()
           res.json({
             url: pageUrl,
             length: response.result.value.length,
             content: response.result.value
           })
-        });
-      }, loadExtraTime); // extra time before accessing DOM
-    });
+        })
+      }, loadExtraTime) // extra time before accessing DOM
+    })
   }).on('error', (err) => {
-    console.error('Cannot connect to browser:', err);
+    console.error('Cannot connect to browser:', err)
     const statusCode = 400
     res.status(statusCode).json({ statusCode, message: err.toString() })
-  });
-};
+  })
+}
 
 // Routes
 
 module.exports = function (app, config) {
-
   const router = express.Router()
   app.use('/', router)
 
-  //router.get('/api/page', scrapePuppeteer)
+  // router.get('/api/page', scrapePuppeteer)
   router.get('/api/page', scrapeChrome)
-
 }

@@ -1,9 +1,8 @@
-const express = require('express');
-const glob = require('glob');
+const express = require('express')
 
-const config = require('./config/config');
+const config = require('./config/config')
 
-var app = express();
-require('./config/express')(app, config);
+var app = express()
+require('./config/express')(app, config)
 
-module.exports = app;
+module.exports = app

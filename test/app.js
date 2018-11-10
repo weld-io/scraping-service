@@ -1,47 +1,47 @@
-'use strict';
+'use strict'
 
-const test = require('tape');
-const request = require('supertest');
-const async = require('async');
+const test = require('tape')
+const request = require('supertest')
+const async = require('async')
 
 test('Test /api/scrape', function (assert) {
-	const app = require('../app/app');
-	async.waterfall([
-			(cb) => request(app).get('/api/scrape?url=https://news.ycombinator.com&selector=.title+a').expect(200, cb),
-			(results, cb) => { assert.ok(results.body, 'Returned list'); cb(null, results); },
-			(results, cb) => { assert.ok(results.body.results[0].count > 0, '1+ items returned'); cb(null, results); },
-		],
-		(err, results) => {
-			assert.end();
-		}
-	);
-});
+  const app = require('../app/app')
+  async.waterfall([
+    (cb) => request(app).get('/api/scrape?url=https://news.ycombinator.com&selector=.title+a').expect(200, cb),
+    (results, cb) => { assert.ok(results.body, 'Returned list'); cb(null, results) },
+    (results, cb) => { assert.ok(results.body.results[0].count > 0, '1+ items returned'); cb(null, results) }
+  ],
+  (err, results) => {
+    assert.end()
+  }
+  )
+})
 
 test('Test /api/metadata', function (assert) {
-	const app = require('../app/app');
-	async.waterfall([
-			(cb) => request(app).get('/api/meta?url=https://www.weld.io').expect(200, cb),
-			(results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results); },
-			(results, cb) => { assert.ok(results.body.general.title.indexOf('Weld') !== -1, 'Page <title> contains “Weld”'); cb(null, results); },
-		],
-		(err, results) => {
-			assert.end();
-		}
-	);
-});
+  const app = require('../app/app')
+  async.waterfall([
+    (cb) => request(app).get('/api/meta?url=https://www.weld.io').expect(200, cb),
+    (results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results) },
+    (results, cb) => { assert.ok(results.body.general.title.indexOf('Weld') !== -1, 'Page <title> contains “Weld”'); cb(null, results) }
+  ],
+  (err, results) => {
+    assert.end()
+  }
+  )
+})
 
 test('Test /api/page', function (assert) {
-	const app = require('../app/app');
-	async.waterfall([
-			(cb) => request(app).get('/api/page?url=http://www.tomsoderlund.com').expect(200, cb),
-			(results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results); },
-			(results, cb) => { assert.ok(results.body.content.indexOf('Tom Söderlund\'s website') !== -1, 'Page content contains “Tom Söderlund\'s website”'); cb(null, results); },
-		],
-		(err, results) => {
-			assert.end();
-		}
-	);
-});
+  const app = require('../app/app')
+  async.waterfall([
+    (cb) => request(app).get('/api/page?url=http://www.tomsoderlund.com').expect(200, cb),
+    (results, cb) => { assert.ok(results.body, 'Returned results'); cb(null, results) },
+    (results, cb) => { assert.ok(results.body.content.indexOf('Tom Söderlund\'s website') !== -1, 'Page content contains “Tom Söderlund\'s website”'); cb(null, results) }
+  ],
+  (err, results) => {
+    assert.end()
+  }
+  )
+})
 
 // https://github.com/substack/tape
 
