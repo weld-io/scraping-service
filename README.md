@@ -42,7 +42,19 @@ Do a HTTP GET:
 
 Results:
 
-	{"time":792,"results":[{"selector":".title a","count":61,"items":["Ask a Female Engineer: Thoughts on the Google Memo", ...]}]}
+	{
+		 "time": 792,
+		 "results": [
+				{
+					 "selector": ".title a",
+					 "count": 61,
+					 "items": [
+							"Ask a Female Engineer: Thoughts on the Google Memo",
+							(more items...)
+					 ]
+				}
+		 ]
+	}
 
 Parameters:
 
