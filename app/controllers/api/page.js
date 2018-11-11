@@ -16,7 +16,7 @@ const scrapePuppeteer = async function (req, res, next) {
   console.log(`Scrape text: "${pageUrl}", ${loadExtraTime} ms`)
 
   try {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 
     const page = await browser.newPage()
     await page.goto(pageUrl)
@@ -84,6 +84,6 @@ module.exports = function (app, config) {
   const router = express.Router()
   app.use('/', router)
 
-  // router.get('/api/page', scrapePuppeteer)
-  router.get('/api/page', scrapeChrome)
+  router.get('/api/page', scrapePuppeteer)
+  //router.get('/api/page', scrapeChrome)
 }
