@@ -9,7 +9,7 @@
 const express = require('express')
 const helpers = require('../helpers')
 
-const scrapePageContent = async function (req, res, next) {
+const scrapePageContent = function (req, res, next) {
   const pageUrl = decodeURIComponent(req.query.url)
   const loadExtraTime = req.query.time || 1000
   const bodyOnly = req.query.bodyOnly

@@ -74,7 +74,7 @@ const fetchPageWithChrome = function (pageUrl, { loadExtraTime, bodyOnly }) {
 
 module.exports = {
 
-  //fetchPageWithChrome,
+  // fetchPageWithChrome,
   fetchPageWithPuppeteer
 
 }
