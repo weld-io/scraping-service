@@ -10,7 +10,7 @@ const express = require('express')
 const puppeteer = require('puppeteer')
 // const helpers = require('../helpers')
 
-const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format='jpeg', width=800, height=600 }) {
+const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600 }) {
   console.log(`Fetch image with Puppeteer: "${pageUrl}"`, { loadExtraTime })
 
   return new Promise(async function (resolve, reject) {
