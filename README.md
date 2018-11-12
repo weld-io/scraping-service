@@ -121,6 +121,16 @@ Results:
 		}
 	}
 
+### Get image
+
+	http://localhost:3036/api/image?url=https://www.weld.io
+
+* `url` (required)
+* `format`
+* `width`
+* `height`
+* `time`
+
 
 ## Implementation
 
