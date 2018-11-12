@@ -1,6 +1,6 @@
 # Scraping Service
 
-**Scraping Service** is a REST API for scraping dynamic websites using Node.js, headless Chrome and Cheerio.
+**Scraping Service** is a REST API for scraping dynamic websites using Node.js, Puppeteer and Cheerio.
 
 ----------
 
@@ -11,12 +11,7 @@ Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=githu
 
 ## How to Run
 
-Start Chrome in headless mode first:
-
-	# Mac OS X
-	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222
-
-Then start Scraping Service with:
+Start Scraping Service with:
 
 	yarn dev # development
 
@@ -129,7 +124,7 @@ Results:
 
 ## Implementation
 
-Built on Node.js, Express, Puppeteer, headless Chrome, Cheerio, html-metadata.
+Built on Node.js, Express, Puppeteer, Cheerio, html-metadata.
 
 
 ## Deploying on Heroku
@@ -138,12 +133,8 @@ Stack: **Heroku-16**
 
 Buildpacks:
 
-	1. https://github.com/heroku/heroku-buildpack-google-chrome
+	1. https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
 	2. heroku/nodejs
-
-Procfile:
-
-	web: /app/.apt/usr/bin/google-chrome & node app/server.js
 
 ### Heroku set-up
 
@@ -153,4 +144,4 @@ Procfile:
 
 	# Stack and Buildpacks
 	heroku stack:set heroku-16
-	heroku buildpacks:add --index 1 https://github.com/heroku/heroku-buildpack-google-chrome
+	heroku buildpacks:add --index 1 https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
