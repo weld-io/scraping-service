@@ -11,6 +11,8 @@ const _ = require('lodash')
 const cheerio = require('cheerio')
 const helpers = require('../helpers')
 
+const compactString = str => str.replace(/[\n\t]/g, '').replace(/\s+/g, ' ').trim()
+
 const parseDOM = (domString, pageSel, complete, deep) => {
   // Use _ instead of . and $ instead of # to allow for easier JavaScript parsing
   const getElementReference = $element => ($element[0].name) + ($element.attr('class') ? '_' + $element.attr('class').replace(/ /g, '_') : '') + ($element.attr('id') ? '$' + $element.attr('id') : '')
@@ -23,13 +25,13 @@ const parseDOM = (domString, pageSel, complete, deep) => {
       obj[nodeRef] = obj[nodeRef] || {}
       // Has children AND text: use '.$text='
       if ($node.text().length > 0) {
-        obj[nodeRef].$text = $node.text()
+        obj[nodeRef].$text = compactString($node.text())
       }
       // Traverse the children
       $node.children().each(traverseChildren.bind(undefined, obj, obj[nodeRef]))
     } else {
       // Has only text
-      obj[nodeRef] = $node.text()
+      obj[nodeRef] = compactString($node.text())
     }
     // Delete parent.$text if same as this
     if ($node.text() === _.get(parentObj, '$text')) {
@@ -42,7 +44,7 @@ const parseDOM = (domString, pageSel, complete, deep) => {
     // this === el
     if (complete) {
       // Complete DOM nodes
-      return $(this).toString()
+      return compactString($(this).toString())
     } else if (deep) {
       // Deep objects
       let deepObj = {}
@@ -50,10 +52,10 @@ const parseDOM = (domString, pageSel, complete, deep) => {
       return deepObj
     } else {
       // Shallow text
-      return $(this).text()
+      return compactString($(this).text())
     }
   }).get()
-  return resultArray
+  return _.compact(resultArray)
 }
 
 const scrapePage = function (req, res, next) {
@@ -92,5 +94,6 @@ module.exports = function (app, config) {
   const router = express.Router()
   app.use('/', router)
 
-  router.get('/api/scrape', scrapePage)
+  router.get('/api/dom', scrapePage)
+  router.get('/api/scrape', scrapePage) // old route
 }

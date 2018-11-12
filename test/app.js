@@ -4,10 +4,10 @@ const test = require('tape')
 const request = require('supertest')
 const async = require('async')
 
-test('Test /api/scrape', function (assert) {
+test('Test /api/dom', function (assert) {
   const app = require('../app/app')
   async.waterfall([
-    (cb) => request(app).get('/api/scrape?url=https://news.ycombinator.com&selector=.title+a').expect(200, cb),
+    (cb) => request(app).get('/api/dom?url=https://news.ycombinator.com&selector=.title+a').expect(200, cb),
     (results, cb) => { assert.ok(results.body, 'Returned list'); cb(null, results) },
     (results, cb) => { assert.ok(results.body.results[0].count > 0, '1+ items returned'); cb(null, results) }
   ],

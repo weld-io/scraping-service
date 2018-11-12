@@ -33,7 +33,7 @@ Server will default to **http://localhost:3036**
 
 Do a HTTP GET:
 
-	http://localhost:3036/api/scrape?url=https://news.ycombinator.com&selector=.title+a
+	http://localhost:3036/api/dom?url=https://news.ycombinator.com&selector=.title+a
 
 Results:
 
