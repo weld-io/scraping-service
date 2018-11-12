@@ -9,6 +9,7 @@
 const express = require('express')
 const _ = require('lodash')
 const cheerio = require('cheerio')
+const helpers = require('../helpers')
 
 const parseDOM = (domString, pageSel, complete, deep) => {
   // Use _ instead of . and $ instead of # to allow for easier JavaScript parsing
@@ -55,7 +56,7 @@ const parseDOM = (domString, pageSel, complete, deep) => {
   return resultArray
 }
 
-const scrapeChrome = function (req, res, next) {
+const scrapePage = function (req, res, next) {
   const pageUrl = decodeURIComponent(req.query.url)
   // Use $ instead of # to allow for easier URL parsing
   const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
@@ -66,37 +67,23 @@ const scrapeChrome = function (req, res, next) {
 
   console.log(`Scrape: "${pageUrl}", "${pageSelector}", ${loadExtraTime} ms`)
 
-  const CDP = require('chrome-remote-interface')
-  CDP((client) => {
-    // Extract used DevTools domains.
-    const { Page, Runtime } = client
-
-    // Enable events on domains we are interested in.
-    Promise.all([
-      Page.enable()
-    ]).then(() => {
-      return Page.navigate({ url: pageUrl })
+  helpers.fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
+    .then(documentHTML => {
+      const selectorsArray = pageSelector.split(',')
+      const resultsObj = selectorsArray.map((selector) => {
+        const items = parseDOM(documentHTML, selector, completeResults, deepResults)
+        return { selector, count: items.length, items }
+      })
+      return resultsObj
     })
-
-    // Evaluate outerHTML after page has loaded.
-    Page.loadEventFired(() => {
-      setTimeout(() => {
-        Runtime.evaluate({ expression: 'document.body.outerHTML' }).then((result) => {
-          const selectorsArray = pageSelector.split(',')
-          const resultsObj = selectorsArray.map((sel) => {
-            const resultArray = parseDOM(result.result.value, sel, completeResults, deepResults)
-            return { selector: sel, count: resultArray.length, items: resultArray }
-          })
-          const timeFinish = Date.now()
-          client.close()
-          res.json({ time: (timeFinish - timeStart), results: resultsObj })
-        })
-      }, loadExtraTime) // extra time before accessing DOM
+    .then(resultsObj => {
+      const timeFinish = Date.now()
+      res.json({ time: (timeFinish - timeStart), results: resultsObj })
     })
-  }).on('error', (err) => {
-    console.error('Cannot connect to browser:', err)
-    res.status(400).json({ error: err })
-  })
+    .catch(err => {
+      console.error('Error:', err)
+      res.status(400).json({ error: err })
+    })
 }
 
 // Routes
@@ -105,5 +92,5 @@ module.exports = function (app, config) {
   const router = express.Router()
   app.use('/', router)
 
-  router.get('/api/scrape', scrapeChrome)
+  router.get('/api/scrape', scrapePage)
 }
