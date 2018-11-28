@@ -22,6 +22,14 @@ or
 Server will default to **http://localhost:3036**
 
 
+## Environment variables
+
+* `MAX_BROWSER_THREADS`: default 3 Puppeteer browsers
+* `RENDER_TIMEOUT`: default 20000 millisecs
+* `PORT`: server port
+* `NODE_ENV`: Node.js environment
+
+
 ## How to Test
 
 	yarn test
@@ -126,10 +134,11 @@ Results:
 	http://localhost:3036/api/image?url=https://www.weld.io
 
 * `url` (required)
-* `format`
-* `width`
-* `height`
-* `time`
+* `format`: `jpeg` (default) or `png`
+* `width`: default 800
+* `height`: default 600
+* `dpr`: deviceScaleFactor, default is 1.0. Note you can use this as a zoom factor; the browser canvas has the same size, but the output image has different size.
+* `time`: milliseconds or `networkidle0`
 
 
 ## Implementation
