@@ -62,7 +62,7 @@ const scrapePage = function (req, res, next) {
   const pageUrl = decodeURIComponent(req.query.url)
   // Use $ instead of # to allow for easier URL parsing
   const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
-  const loadExtraTime = req.query.time || 0
+  const loadExtraTime = req.query.time || 3000
   const deepResults = req.query.deep || false
   const completeResults = req.query.complete || false
   const timeStart = Date.now()

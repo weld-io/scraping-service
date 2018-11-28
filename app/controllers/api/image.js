@@ -7,22 +7,28 @@
 'use strict'
 
 const express = require('express')
-const puppeteer = require('puppeteer')
-// const helpers = require('../helpers')
+const { browserPool } = require('../helpers')
 
-const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600 }) {
-  console.log(`Fetch image with Puppeteer: "${pageUrl}"`, { loadExtraTime })
+const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600, dpr = 1.0 }) {
+  height = height || width
+  dpr = parseFloat(dpr)
+
+  console.log(`Fetch image with Puppeteer: "${pageUrl}"`, { loadExtraTime, format, width, height, dpr })
 
   return new Promise(async function (resolve, reject) {
     try {
-      const browser = await puppeteer.launch({ args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage'], ignoreHTTPSErrors: true })
+      const browser = await browserPool.acquire()
       const page = await browser.newPage()
-      await page.setViewport({ width, height, deviceScaleFactor: 1, isMobile: false })
-      await page.goto(pageUrl)
-      await page.waitFor(loadExtraTime)
+      await page.setViewport({ width, height, deviceScaleFactor: dpr, isMobile: false })
+      if (['networkidle0'].includes(loadExtraTime)) {
+        await page.goto(pageUrl, { waitUntil: loadExtraTime })
+      } else {
+        await page.goto(pageUrl)
+        await page.waitFor(loadExtraTime)
+      }
       const screenshot = await page.screenshot({ type: format, fullPage: false })
       await page.close()
-      await browser.close()
+      await browserPool.release(browser)
       resolve(screenshot)
     } catch (err) {
       reject(err)
@@ -36,14 +42,12 @@ const getImage = async function (req, res, next) {
     ...req.query,
     width: req.query.width ? parseInt(req.query.width) : undefined,
     height: req.query.height ? parseInt(req.query.height) : undefined,
-    loadExtraTime: req.query.time || 2000
+    loadExtraTime: req.query.time || 0
   }
-
-  console.log(`Get image: "${pageUrl}"`, options)
 
   fetchImageWithPuppeteer(pageUrl, options)
     .then(image => {
-      res.setHeader('content-type', 'image/png')
+      res.setHeader('content-type', 'image/' + (options.format || 'jpeg'))
       res.send(image)
     })
     .catch(err => {
