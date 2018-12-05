@@ -148,7 +148,7 @@ Built on Node.js, Express, Puppeteer, Cheerio, html-metadata.
 
 ## Deploying on Heroku
 
-Stack: **Heroku-16**
+Stack: **Heroku-18**
 
 Buildpacks:
 
@@ -162,5 +162,4 @@ Buildpacks:
 	heroku config:set NODE_ENV=production
 
 	# Stack and Buildpacks
-	heroku stack:set heroku-16
 	heroku buildpacks:add --index 1 https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz

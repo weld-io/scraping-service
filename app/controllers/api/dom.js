@@ -67,7 +67,7 @@ const scrapePage = function (req, res, next) {
   const completeResults = req.query.complete || false
   const timeStart = Date.now()
 
-  console.log(`Scrape: "${pageUrl}", "${pageSelector}", ${loadExtraTime} ms`)
+  console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
 
   helpers.fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
     .then(documentHTML => {
