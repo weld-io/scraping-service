@@ -12,7 +12,15 @@ const genericPool = require('generic-pool')
 // Private functions
 
 const poolManager = {
-  create: () => puppeteer.launch({ args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage'], ignoreHTTPSErrors: true }),
+  create: () => puppeteer.launch({ args: [
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--disable-setuid-sandbox',
+    '--headless',
+    '--no-sandbox',
+    '--single-process'
+  ],
+  ignoreHTTPSErrors: true }),
   destroy: (browser) => browser.close()
 }
 
