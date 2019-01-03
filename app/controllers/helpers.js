@@ -7,11 +7,14 @@
 'use strict'
 
 const puppeteer = require('puppeteer')
-const genericPool = require('generic-pool')
+//const genericPool = require('generic-pool')
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Private functions
 
 const poolManager = {
+  /*
   create: () => puppeteer.launch({ args: [
     '--disable-dev-shm-usage',
     '--disable-gpu',
@@ -21,17 +24,31 @@ const poolManager = {
     '--single-process'
   ],
   ignoreHTTPSErrors: true }),
+  */
+  create: () => puppeteer.connect({ browserWsEndpoint: 'wss://chrome.browserless.io?token=a0ea319e-bed1-4c56-ade2-3229d467e8a1' }),
   destroy: (browser) => browser.close()
 }
 
-const browserPool = genericPool.createPool(poolManager, { min: 1, max: process.env.MAX_BROWSER_THREADS || 3, acquireTimeoutMillis: process.env.RENDER_TIMEOUT || 20 * 1000 })
+//const browserPool = genericPool.createPool(poolManager, { min: 1, max: process.env.MAX_BROWSER_THREADS || 3, acquireTimeoutMillis: process.env.RENDER_TIMEOUT || 20 * 1000 })
+
+const getBrowser = () => IS_PRODUCTION
+  ? puppeteer.connect({ browserWsEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}` })
+  : puppeteer.launch({ args: [
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--disable-setuid-sandbox',
+    '--headless',
+    '--no-sandbox',
+    '--single-process'
+  ],
+  ignoreHTTPSErrors: true })
 
 const fetchPageWithPuppeteer = function (pageUrl, { loadExtraTime, bodyOnly }) {
   console.log(`Fetch page with Puppeteer: "${pageUrl}"`, { loadExtraTime, bodyOnly })
 
   return new Promise(async function (resolve, reject) {
     try {
-      const browser = await browserPool.acquire()
+      const browser = await getBrowser() //await browserPool.acquire()
       const page = await browser.newPage()
 
       if (['networkidle0'].includes(loadExtraTime)) {
@@ -46,7 +63,7 @@ const fetchPageWithPuppeteer = function (pageUrl, { loadExtraTime, bodyOnly }) {
         ? await page.evaluate(() => document.body.outerHTML)
         : await page.evaluate(() => document.documentElement.outerHTML)
 
-      await browserPool.release(browser)
+      //await browserPool.release(browser)
 
       resolve(documentHTML)
     } catch (err) {
@@ -94,7 +111,7 @@ const fetchPageWithChrome = function (pageUrl, { loadExtraTime, bodyOnly }) {
 
 module.exports = {
 
-  browserPool,
+  //browserPool,
 
   // fetchPageWithChrome,
   fetchPageWithPuppeteer
