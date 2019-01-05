@@ -1,11 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "public/*", "use": "@now/static" },
-    { "src": "dom.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
-    { "src": "image.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
-    { "src": "meta.js", "use": "@now/node" },
-    { "src": "page.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } }
+    { "src": "app/public/*", "use": "@now/static" },
+    { "src": "app/controllers/api/dom.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
+    { "src": "app/controllers/api/image.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
+    { "src": "app/controllers/api/meta.js", "use": "@now/node" },
+    { "src": "app/controllers/api/page.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } }
   ],
   "routes": [
     { "src": "/", "dest": "/app/public/index.html" },
