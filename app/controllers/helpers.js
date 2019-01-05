@@ -9,6 +9,16 @@
 const chrome = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
 
+const parseRequestParams = url => (url.split('?')[0] || '/').substr(1).split('/')
+
+const parseRequestQuery = url => (url.split('?')[1] || '')
+  .split('&')
+  .reduce((result, propValue) => {
+    const key = propValue.split('=')[0]
+    if (key) result[key] = propValue.split('=')[1]
+    return result
+  }, {})
+
 const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnly }) {
   console.log(`Fetch page with Puppeteer: "${pageUrl}"`, { loadExtraTime, bodyOnly })
 
@@ -61,23 +71,12 @@ const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format
   return screenshot
 }
 
-// async function getScreenshot (url, type, quality, fullPage) {
-//   const browser = await puppeteer.launch({
-//     args: chrome.args,
-//     executablePath: await chrome.executablePath,
-//     headless: chrome.headless
-//   })
-
-//   const page = await browser.newPage()
-//   await page.goto(url)
-//   const file = await page.screenshot({ type, quality, fullPage })
-//   await browser.close()
-//   return file
-// }
-
 // Public API
 
 module.exports = {
+
+  parseRequestParams,
+  parseRequestQuery,
 
   fetchPageWithPuppeteer,
   fetchImageWithPuppeteer

@@ -12,14 +12,11 @@
     "lint": "standard",
     "fix": "standard --fix"
   },
-  "engines": {
-    "node": "^8.10.0"
-  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "chrome-aws-lambda": "^1.11.2",
     "html-metadata": "^1.7.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.11",
     "puppeteer-core": "^1.11.0"
   },
   "devDependencies": {

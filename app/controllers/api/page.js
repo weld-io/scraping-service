@@ -6,13 +6,14 @@
 
 'use strict'
 
-const { fetchPageWithPuppeteer } = require('../helpers')
+const { parseRequestQuery, fetchPageWithPuppeteer } = require('../helpers')
 
 const scrapePageContent = async function (req, res) {
   try {
-    const pageUrl = decodeURIComponent(req.query.url)
-    const loadExtraTime = req.query.time || 1000
-    const bodyOnly = req.query.bodyOnly
+    const query = parseRequestQuery(req.url)
+    const pageUrl = decodeURIComponent(query.url)
+    const loadExtraTime = query.time || 1000
+    const bodyOnly = query.bodyOnly
 
     console.log(`Scrape text: "${pageUrl}", ${loadExtraTime} ms`)
 

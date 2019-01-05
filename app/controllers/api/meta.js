@@ -8,10 +8,12 @@
 
 const { includes, merge } = require('lodash')
 const htmlMetadata = require('html-metadata')
+const { parseRequestQuery } = require('../helpers')
 
 const scrapeMetaData = async function (req, res) {
   try {
-    const pageUrl = decodeURIComponent(req.query.url)
+    const query = parseRequestQuery(req.url)
+    const pageUrl = decodeURIComponent(query.url)
     const protocol = includes(pageUrl, 'https:') ? 'https' : 'http'
 
     console.log(`Scrape metadata: "${pageUrl}"`)

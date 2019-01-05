@@ -8,7 +8,7 @@
 
 const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
-const { fetchPageWithPuppeteer } = require('../helpers')
+const { parseRequestQuery, fetchPageWithPuppeteer } = require('../helpers')
 
 const compactString = str => str.replace(/[\n\t]/g, '').replace(/\s+/g, ' ').trim()
 
@@ -59,12 +59,13 @@ const parseDOM = (domString, pageSel, complete, deep) => {
 
 const scrapePage = async function (req, res) {
   try {
-    const pageUrl = decodeURIComponent(req.query.url)
+    const query = parseRequestQuery(req.url)
+    const pageUrl = decodeURIComponent(query.url)
     // Use $ instead of # to allow for easier URL parsing
-    const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
-    const loadExtraTime = req.query.time || 3000
-    const deepResults = req.query.deep || false
-    const completeResults = req.query.complete || false
+    const pageSelector = decodeURIComponent(query.selector || 'body').replace(/\$/g, '#')
+    const loadExtraTime = query.time || 3000
+    const deepResults = query.deep || false
+    const completeResults = query.complete || false
     const timeStart = Date.now()
 
     console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
