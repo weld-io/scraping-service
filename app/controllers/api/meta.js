@@ -10,29 +10,29 @@ const { includes, merge } = require('lodash')
 const htmlMetadata = require('html-metadata')
 
 const scrapeMetaData = async function (req, res) {
-  const pageUrl = decodeURIComponent(req.query.url)
-  const protocol = includes(pageUrl, 'https:') ? 'https' : 'http'
+  try {
+    const pageUrl = decodeURIComponent(req.query.url)
+    const protocol = includes(pageUrl, 'https:') ? 'https' : 'http'
 
-  const returnResults = function (url, metadata) {
-    const metadataAndUrl = merge({}, { url }, metadata)
-    res.status(200).json(metadataAndUrl)
-  }
-
-  console.log(`Scrape metadata: "${pageUrl}"`)
-  htmlMetadata(pageUrl)
-    .then(returnResults.bind(undefined, pageUrl))
-    .catch(function (getErr) {
-      console.error(getErr)
+    console.log(`Scrape metadata: "${pageUrl}"`)
+    let metadata
+    try {
+      metadata = await htmlMetadata(pageUrl)
+    } catch (getErr) {
       if (getErr.status === 504 && protocol === 'https') {
-        // Change from HTTPS to HTTP
-        const httpUrl = pageUrl.replace('https:', 'http:')
-        htmlMetadata(httpUrl)
-          .then(returnResults.bind(undefined, httpUrl))
-          .catch(getErr2 => res.status(getErr2.status || 400).json(getErr2))
-      } else {
-        res.status(getErr.status || 400).json(getErr)
+        const pageUrlWithHttp = pageUrl.replace('https:', 'http:')
+        metadata = await htmlMetadata(pageUrlWithHttp)
       }
-    })
+    }
+    const metadataAndUrl = merge({}, { url: pageUrl }, metadata)
+    res.setHeader('Content-Type', 'application/json')
+    res.send(JSON.stringify(metadataAndUrl))
+  } catch (err) {
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ code: res.statusCode, message: err.message }))
+    console.error(err.message)
+  }
 }
 
 // Routes

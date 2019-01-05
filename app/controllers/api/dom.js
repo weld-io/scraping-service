@@ -8,7 +8,7 @@
 
 const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
-const helpers = require('../helpers')
+const { fetchPageWithPuppeteer } = require('../helpers')
 
 const compactString = str => str.replace(/[\n\t]/g, '').replace(/\s+/g, ' ').trim()
 
@@ -58,33 +58,32 @@ const parseDOM = (domString, pageSel, complete, deep) => {
 }
 
 const scrapePage = async function (req, res) {
-  const pageUrl = decodeURIComponent(req.query.url)
-  // Use $ instead of # to allow for easier URL parsing
-  const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
-  const loadExtraTime = req.query.time || 3000
-  const deepResults = req.query.deep || false
-  const completeResults = req.query.complete || false
-  const timeStart = Date.now()
+  try {
+    const pageUrl = decodeURIComponent(req.query.url)
+    // Use $ instead of # to allow for easier URL parsing
+    const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
+    const loadExtraTime = req.query.time || 3000
+    const deepResults = req.query.deep || false
+    const completeResults = req.query.complete || false
+    const timeStart = Date.now()
 
-  console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
+    console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
 
-  helpers.fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
-    .then(documentHTML => {
-      const selectorsArray = pageSelector.split(',')
-      const resultsObj = selectorsArray.map((selector) => {
-        const items = parseDOM(documentHTML, selector, completeResults, deepResults)
-        return { selector, count: items.length, items }
-      })
-      return resultsObj
+    const documentHTML = await fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
+    const selectorsArray = pageSelector.split(',')
+    const resultsObj = selectorsArray.map(selector => {
+      const items = parseDOM(documentHTML, selector, completeResults, deepResults)
+      return { selector, count: items.length, items }
     })
-    .then(resultsObj => {
-      const timeFinish = Date.now()
-      res.json({ time: (timeFinish - timeStart), results: resultsObj })
-    })
-    .catch(err => {
-      console.error('Error:', err)
-      res.status(400).json({ error: err })
-    })
+    const timeFinish = Date.now()
+    res.setHeader('Content-Type', 'application/json')
+    res.send(JSON.stringify({ time: (timeFinish - timeStart), results: resultsObj }))
+  } catch (err) {
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ code: res.statusCode, message: err.message }))
+    console.error(err.message)
+  }
 }
 
 // Routes

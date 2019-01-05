@@ -8,103 +8,78 @@
 
 const chrome = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
-// const genericPool = require('generic-pool')
 
-// Private functions
-
-// const poolManager = {
-//   create: () => puppeteer.launch({ args: [
-//     '--disable-dev-shm-usage',
-//     '--disable-gpu',
-//     '--disable-setuid-sandbox',
-//     '--headless',
-//     '--no-sandbox',
-//     '--single-process'
-//   ],
-//   ignoreHTTPSErrors: true }),
-
-//   create: () => puppeteer.connect({ browserWsEndpoint: 'wss://chrome.browserless.io?token=a0ea319e-bed1-4c56-ade2-3229d467e8a1' }),
-//   destroy: (browser) => browser.close()
-// }
-
-// const browserPool = genericPool.createPool(poolManager, { min: 1, max: process.env.MAX_BROWSER_THREADS || 3, acquireTimeoutMillis: process.env.RENDER_TIMEOUT || 20 * 1000 })
-
-const fetchPageWithPuppeteer = function (pageUrl, { loadExtraTime, bodyOnly }) {
+const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnly }) {
   console.log(`Fetch page with Puppeteer: "${pageUrl}"`, { loadExtraTime, bodyOnly })
 
-  return new Promise(async function (resolve, reject) {
-    try {
-      const browser = await puppeteer.launch({
-        args: chrome.args,
-        executablePath: await chrome.executablePath,
-        headless: chrome.headless
-      })
-
-      const page = await browser.newPage()
-
-      if (['networkidle0'].includes(loadExtraTime)) {
-        await page.goto(pageUrl, { waitUntil: loadExtraTime })
-      } else {
-        await page.goto(pageUrl)
-        await page.waitFor(loadExtraTime)
-      }
-
-      // await page.content(), document.body.innerHTML, document.documentElement.outerHTML
-      const documentHTML = bodyOnly
-        ? await page.evaluate(() => document.body.outerHTML)
-        : await page.evaluate(() => document.documentElement.outerHTML)
-
-      // await browserPool.release(browser)
-
-      resolve(documentHTML)
-    } catch (err) {
-      reject(err)
-    }
+  const browser = await puppeteer.launch({
+    args: chrome.args,
+    executablePath: await chrome.executablePath,
+    headless: chrome.headless
   })
+
+  const page = await browser.newPage()
+
+  if (['networkidle0'].includes(loadExtraTime)) {
+    await page.goto(pageUrl, { waitUntil: loadExtraTime })
+  } else {
+    await page.goto(pageUrl)
+    await page.waitFor(loadExtraTime)
+  }
+
+  // await page.content(), document.body.innerHTML, document.documentElement.outerHTML
+  const documentHTML = bodyOnly
+    ? await page.evaluate(() => document.body.outerHTML)
+    : await page.evaluate(() => document.documentElement.outerHTML)
+
+  await browser.close()
+  return documentHTML
 }
 
-/*
-const fetchPageWithChrome = function (pageUrl, { loadExtraTime, bodyOnly }) {
-  console.log(`Fetch page with Chrome: "${pageUrl}", ${loadExtraTime} ms`)
+const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600, dpr = 1.0 }) {
+  height = height || width
+  dpr = parseFloat(dpr)
 
-  return new Promise(async function (resolve, reject) {
-    const domElement = bodyOnly ? 'document.body.outerHTML' : 'document.documentElement.outerHTML'
+  console.log(`Fetch image with Puppeteer: "${pageUrl}"`, { loadExtraTime, format, width, height, dpr })
 
-    const CDP = require('chrome-remote-interface')
-    CDP((client) => {
-      // Extract used DevTools domains.
-      const { Page, Runtime } = client
-
-      // Enable events on domains we are interested in.
-      Promise.all([
-        Page.enable()
-      ]).then(() => {
-        return Page.navigate({ url: pageUrl })
-      })
-
-      // Evaluate outerHTML after page has loaded.
-      Page.loadEventFired(() => {
-        setTimeout(() => {
-          Runtime.evaluate({ expression: domElement }).then(response => {
-            client.close()
-            resolve(response.result.value)
-          })
-        }, loadExtraTime) // extra time before accessing DOM
-      })
-    }).on('error', err => {
-      reject(err)
-    })
+  const browser = await puppeteer.launch({
+    args: chrome.args,
+    executablePath: await chrome.executablePath,
+    headless: chrome.headless
   })
+  const page = await browser.newPage()
+  await page.setViewport({ width, height, deviceScaleFactor: dpr, isMobile: false })
+  if (['networkidle0'].includes(loadExtraTime)) {
+    await page.goto(pageUrl, { waitUntil: loadExtraTime })
+  } else {
+    await page.goto(pageUrl)
+    await page.waitFor(loadExtraTime)
+  }
+  const screenshot = await page.screenshot({ type: format, fullPage: false })
+  await browser.close()
+
+  return screenshot
 }
-*/
+
+// async function getScreenshot (url, type, quality, fullPage) {
+//   const browser = await puppeteer.launch({
+//     args: chrome.args,
+//     executablePath: await chrome.executablePath,
+//     headless: chrome.headless
+//   })
+
+//   const page = await browser.newPage()
+//   await page.goto(url)
+//   const file = await page.screenshot({ type, quality, fullPage })
+//   await browser.close()
+//   return file
+// }
 
 // Public API
 
 module.exports = {
 
-  // browserPool,
-
-  // fetchPageWithChrome,
-  fetchPageWithPuppeteer
+  fetchPageWithPuppeteer,
+  fetchImageWithPuppeteer
 
 }
