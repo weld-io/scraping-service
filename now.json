@@ -17,5 +17,9 @@
     { "src": "/api/meta?", "dest": "/app/controllers/api/meta.js" },
     { "src": "/api/page?", "dest": "/app/controllers/api/page.js" },
     { "src": "/(.+)", "dest": "/app/zeit/screenshot.js" }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
+  }
 }
