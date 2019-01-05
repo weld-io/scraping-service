@@ -5,7 +5,8 @@
     { "src": "app/controllers/api/dom.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
     { "src": "app/controllers/api/image.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
     { "src": "app/controllers/api/meta.js", "use": "@now/node" },
-    { "src": "app/controllers/api/page.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } }
+    { "src": "app/controllers/api/page.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
+    { "src": "app/zeit/screenshot.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } }
   ],
   "routes": [
     { "src": "/", "dest": "/app/public/index.html" },
@@ -14,6 +15,7 @@
     { "src": "/api/scrape?", "dest": "/app/controllers/api/dom.js" },
     { "src": "/api/image?", "dest": "/app/controllers/api/image.js" },
     { "src": "/api/meta?", "dest": "/app/controllers/api/meta.js" },
-    { "src": "/api/page?", "dest": "/app/controllers/api/page.js" }
+    { "src": "/api/page?", "dest": "/app/controllers/api/page.js" },
+    { "src": "/zeit/(.+)", "dest": "/app/zeit/screenshot.js" }
   ]
 }
