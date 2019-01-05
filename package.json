@@ -12,6 +12,9 @@
     "lint": "standard",
     "fix": "standard --fix"
   },
+  "config": {
+    "puppeteer_skip_chromium_download": true
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "chrome-aws-lambda": "^1.11.2",
