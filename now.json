@@ -16,6 +16,6 @@
     { "src": "/api/image?", "dest": "/app/controllers/api/image.js" },
     { "src": "/api/meta?", "dest": "/app/controllers/api/meta.js" },
     { "src": "/api/page?", "dest": "/app/controllers/api/page.js" },
-    { "src": "/zeit/(.+)", "dest": "/app/zeit/screenshot.js" }
+    { "src": "/(.+)", "dest": "/app/zeit/screenshot.js" }
   ]
 }
