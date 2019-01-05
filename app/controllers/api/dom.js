@@ -19,8 +19,8 @@ const parseDOM = (domString, pageSel, complete, deep) => {
   const traverseChildren = function (parentObj, obj, i, elem) {
     const $node = $(elem)
     const nodeRef = getElementReference($node)
-    // Has children
-    if ($node.children().length > 0) {
+    // Has children and is not a text node
+    if ($node.children().length > 0 && typeof(obj[nodeRef]) !== 'string') {
       obj[nodeRef] = obj[nodeRef] || {}
       // Has children AND text: use '.$text='
       if ($node.text().length > 0) {
