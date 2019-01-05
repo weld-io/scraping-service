@@ -10,7 +10,8 @@
     "start": "node app/server.js",
     "test": "node test/app.js",
     "lint": "standard",
-    "fix": "standard --fix"
+    "fix": "standard --fix",
+    "now-build": "export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true"
   },
   "config": {
     "puppeteer_skip_chromium_download": true
