@@ -6,10 +6,9 @@
 
 'use strict'
 
-const express = require('express')
 const helpers = require('../helpers')
 
-const scrapePageContent = function (req, res, next) {
+const scrapePageContent = async function (req, res) {
   const pageUrl = decodeURIComponent(req.query.url)
   const loadExtraTime = req.query.time || 1000
   const bodyOnly = req.query.bodyOnly
@@ -31,11 +30,4 @@ const scrapePageContent = function (req, res, next) {
     })
 }
 
-// Routes
-
-module.exports = function (app, config) {
-  const router = express.Router()
-  app.use('/', router)
-
-  router.get('/api/page', scrapePageContent)
-}
+module.exports = scrapePageContent

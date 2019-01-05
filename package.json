@@ -1,6 +1,6 @@
 {
   "name": "scraping-service",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "description": "Scraping Service is a REST API for scraping dynamic websites using Node.js, Puppeteer and Cheerio.",
   "author": "Weld (www.weld.io)",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "async": "^2.5.0",
     "body-parser": "^1.17.1",
     "cheerio": "^1.0.0-rc.2",
+    "chrome-aws-lambda": "^1.11.2",
     "compression": "^1.6.2",
     "cors": "^2.8.4",
     "express": "^4.15.2",
@@ -30,7 +31,7 @@
     "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "node-fetch": "^2.0.0",
-    "puppeteer": "^1.10.0"
+    "puppeteer-core": "^1.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",

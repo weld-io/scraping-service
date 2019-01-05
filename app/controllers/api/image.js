@@ -6,7 +6,6 @@
 
 'use strict'
 
-const express = require('express')
 const { browserPool } = require('../helpers')
 
 const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600, dpr = 1.0 }) {
@@ -36,7 +35,7 @@ const fetchImageWithPuppeteer = function (pageUrl, { loadExtraTime, format = 'jp
   })
 }
 
-const getImage = async function (req, res, next) {
+const getImage = async function (req, res) {
   const pageUrl = decodeURIComponent(req.query.url)
   const options = {
     ...req.query,
@@ -59,9 +58,4 @@ const getImage = async function (req, res, next) {
 
 // Routes
 
-module.exports = function (app, config) {
-  const router = express.Router()
-  app.use('/', router)
-
-  router.get('/api/image', getImage)
-}
+module.exports = getImage

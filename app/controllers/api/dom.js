@@ -6,8 +6,7 @@
 
 'use strict'
 
-const express = require('express')
-const _ = require('lodash')
+const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
 const helpers = require('../helpers')
 
@@ -34,7 +33,7 @@ const parseDOM = (domString, pageSel, complete, deep) => {
       obj[nodeRef] = compactString($node.text())
     }
     // Delete parent.$text if same as this
-    if ($node.text() === _.get(parentObj, '$text')) {
+    if ($node.text() === get(parentObj, '$text')) {
       delete parentObj.$text
     }
   }
@@ -55,10 +54,10 @@ const parseDOM = (domString, pageSel, complete, deep) => {
       return compactString($(this).text())
     }
   }).get()
-  return _.compact(resultArray)
+  return compact(resultArray)
 }
 
-const scrapePage = function (req, res, next) {
+const scrapePage = async function (req, res) {
   const pageUrl = decodeURIComponent(req.query.url)
   // Use $ instead of # to allow for easier URL parsing
   const pageSelector = decodeURIComponent(req.query.selector || 'body').replace(/\$/g, '#')
@@ -90,10 +89,4 @@ const scrapePage = function (req, res, next) {
 
 // Routes
 
-module.exports = function (app, config) {
-  const router = express.Router()
-  app.use('/', router)
-
-  router.get('/api/dom', scrapePage)
-  router.get('/api/scrape', scrapePage) // old route
-}
+module.exports = scrapePage

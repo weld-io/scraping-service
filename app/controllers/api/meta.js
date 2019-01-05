@@ -6,16 +6,15 @@
 
 'use strict'
 
-const express = require('express')
-const _ = require('lodash')
+const { includes, merge } = require('lodash')
 const htmlMetadata = require('html-metadata')
 
-const scrapeMetaData = function (req, res, next) {
+const scrapeMetaData = async function (req, res) {
   const pageUrl = decodeURIComponent(req.query.url)
-  const protocol = _.includes(pageUrl, 'https:') ? 'https' : 'http'
+  const protocol = includes(pageUrl, 'https:') ? 'https' : 'http'
 
   const returnResults = function (url, metadata) {
-    const metadataAndUrl = _.merge({}, { url }, metadata)
+    const metadataAndUrl = merge({}, { url }, metadata)
     res.status(200).json(metadataAndUrl)
   }
 
@@ -38,9 +37,4 @@ const scrapeMetaData = function (req, res, next) {
 
 // Routes
 
-module.exports = function (app, config) {
-  const router = express.Router()
-  app.use('/', router)
-
-  router.get('/api/meta', scrapeMetaData)
-}
+module.exports = scrapeMetaData
