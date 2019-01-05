@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "app/server.js",
   "scripts": {
-    "dev": "nodemon app/server.js",
+    "dev": "nodemon --max_old_space_size=512 app/server.js",
     "start": "node app/server.js",
     "test": "node test/app.js",
     "lint": "standard",
