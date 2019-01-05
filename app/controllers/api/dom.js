@@ -60,6 +60,7 @@ const parseDOM = (domString, pageSel, complete, deep) => {
 const scrapePage = async function (req, res) {
   try {
     const query = parseRequestQuery(req.url)
+    if (!query.url) throw new Error(`No "url" specified: ${req.url}`)
     const pageUrl = decodeURIComponent(query.url)
     // Use $ instead of # to allow for easier URL parsing
     const pageSelector = decodeURIComponent(query.selector || 'body').replace(/\$/g, '#')
@@ -78,7 +79,7 @@ const scrapePage = async function (req, res) {
     })
     const timeFinish = Date.now()
     res.setHeader('Content-Type', 'application/json')
-    res.send(JSON.stringify({ time: (timeFinish - timeStart), results: resultsObj }))
+    res.end(JSON.stringify({ time: (timeFinish - timeStart), results: resultsObj }))
   } catch (err) {
     res.statusCode = 500
     res.setHeader('Content-Type', 'application/json')

@@ -11,6 +11,7 @@ const { parseRequestQuery, fetchImageWithPuppeteer } = require('../helpers')
 const getImage = async function (req, res) {
   try {
     const query = parseRequestQuery(req.url)
+    if (!query.url) throw new Error(`No "url" specified: ${req.url}`)
     const pageUrl = decodeURIComponent(query.url)
     const options = {
       ...query,

@@ -7,7 +7,7 @@
 'use strict'
 
 const chrome = require('chrome-aws-lambda')
-const puppeteer = require('puppeteer-core')
+const puppeteer = process.env.NODE_ENV === 'production' ? require('puppeteer-core') : require('puppeteer')
 
 const parseRequestParams = url => (url.split('?')[0] || '/').substr(1).split('/')
 
@@ -22,11 +22,25 @@ const parseRequestQuery = url => (url.split('?')[1] || '')
 const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnly }) {
   console.log(`Fetch page with Puppeteer: "${pageUrl}"`, { loadExtraTime, bodyOnly })
 
-  const browser = await puppeteer.launch({
-    args: chrome.args,
-    executablePath: await chrome.executablePath,
-    headless: chrome.headless
-  })
+  let browser
+  if (process.env.NODE_ENV === 'production') {
+    browser = await puppeteer.launch({
+      args: chrome.args,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless
+    })
+  }
+  else {
+    browser = await puppeteer.launch({ args: [
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--disable-setuid-sandbox',
+      '--headless',
+      '--no-sandbox',
+      '--single-process'
+    ],
+    ignoreHTTPSErrors: true })
+  }
 
   const page = await browser.newPage()
 

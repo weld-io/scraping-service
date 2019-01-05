@@ -11,6 +11,7 @@ const { parseRequestQuery, fetchPageWithPuppeteer } = require('../helpers')
 const scrapePageContent = async function (req, res) {
   try {
     const query = parseRequestQuery(req.url)
+    if (!query.url) throw new Error(`No "url" specified: ${req.url}`)
     const pageUrl = decodeURIComponent(query.url)
     const loadExtraTime = query.time || 1000
     const bodyOnly = query.bodyOnly

@@ -13,6 +13,7 @@ const { parseRequestQuery } = require('../helpers')
 const scrapeMetaData = async function (req, res) {
   try {
     const query = parseRequestQuery(req.url)
+    if (!query.url) throw new Error(`No "url" specified: ${req.url}`)
     const pageUrl = decodeURIComponent(query.url)
     const protocol = includes(pageUrl, 'https:') ? 'https' : 'http'
 
@@ -28,7 +29,7 @@ const scrapeMetaData = async function (req, res) {
     }
     const metadataAndUrl = merge({}, { url: pageUrl }, metadata)
     res.setHeader('Content-Type', 'application/json')
-    res.send(JSON.stringify(metadataAndUrl))
+    res.end(JSON.stringify(metadataAndUrl))
   } catch (err) {
     res.statusCode = 500
     res.setHeader('Content-Type', 'application/json')
