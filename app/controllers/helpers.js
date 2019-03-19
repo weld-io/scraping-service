@@ -48,7 +48,7 @@ const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnl
     await page.goto(pageUrl, { waitUntil: loadExtraTime })
   } else {
     await page.goto(pageUrl)
-    await page.waitFor(loadExtraTime)
+    await page.waitFor(parseInt((loadExtraTime)))
   }
 
   // await page.content(), document.body.innerHTML, document.documentElement.outerHTML
