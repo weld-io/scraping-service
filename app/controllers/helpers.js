@@ -76,8 +76,9 @@ const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format
   if (['networkidle0'].includes(loadExtraTime)) {
     await page.goto(pageUrl, { waitUntil: loadExtraTime })
   } else {
+    // Wait milliseconds
     await page.goto(pageUrl)
-    await page.waitFor(loadExtraTime)
+    await page.waitFor(parseInt((loadExtraTime)))
   }
   const screenshot = await page.screenshot({ type: format, fullPage: false })
   await browser.close()
