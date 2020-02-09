@@ -60,7 +60,7 @@ const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnl
   return documentHTML
 }
 
-const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 600, dpr = 1.0 }) {
+const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format = 'jpeg', width = 800, height = 450, dpr = 1.0 }) {
   height = height || width
   dpr = parseFloat(dpr)
 

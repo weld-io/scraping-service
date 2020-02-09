@@ -136,7 +136,7 @@ Results:
 * `url` (required)
 * `format`: `jpeg` (default) or `png`
 * `width`: default 800
-* `height`: default 600
+* `height`: default 450
 * `dpr`: deviceScaleFactor, default is 1.0. Note you can use this as a zoom factor; the browser canvas has the same size, but the output image has different size.
 * `time`: milliseconds or `networkidle0`
 
