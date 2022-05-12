@@ -13,7 +13,7 @@ Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=githu
 
 Start Scraping Service with:
 
-	yarn dev # development
+	API=dom yarn dev # development
 
 or
 
@@ -24,6 +24,7 @@ Server will default to **http://localhost:3036**
 
 ## Environment variables
 
+* `API`: dom/image/meta/page – for testing only. See /app/controllers/api folder
 * `MAX_BROWSER_THREADS`: default 3 Puppeteer browsers
 * `RENDER_TIMEOUT`: default 20000 millisecs
 * `PORT`: server port
