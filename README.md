@@ -4,20 +4,20 @@
 
 ----------
 
-Made by the team at **Weld** ([www.weld.io](https://www.weld.io?utm_source=github-scraping-service)), the #codefree web/app creation tool:
+Made by the team at **Weld** ([www.weldyourownapp.com](https://www.weldyourownapp.com?utm_source=github-scraping-service)), the #codefree web/app creation tool:
 
-[![Weld](https://s3-eu-west-1.amazonaws.com/weld-social-and-blog/gif/weld_explained.gif?v2)](https://www.weld.io?utm_source=github-scraping-service)
+[![Weld](https://s3-eu-west-1.amazonaws.com/weld-social-and-blog/gif/weld_explained.gif?v2)](https://www.weldyourownapp.com?utm_source=github-scraping-service)
 
 
 ## How to Run
 
 Start Scraping Service with:
 
-	API=dom yarn dev # development
+    API=dom yarn dev # development
 
 or
 
-	yarn start # production
+    yarn start # production
 
 Server will default to **http://localhost:3036**
 
@@ -33,7 +33,7 @@ Server will default to **http://localhost:3036**
 
 ## How to Test
 
-	yarn test
+    yarn test
 
 
 ## How to Use
@@ -42,23 +42,23 @@ Server will default to **http://localhost:3036**
 
 Do a HTTP GET:
 
-	http://localhost:3036/api/dom?url=https://news.ycombinator.com&selector=.title+a
+    http://localhost:3036/api/dom?url=https://news.ycombinator.com&selector=.title+a
 
 Results:
 
-	{
-		 "time": 792,
-		 "results": [
-				{
-					 "selector": ".title a",
-					 "count": 61,
-					 "items": [
-							"Ask a Female Engineer: Thoughts on the Google Memo",
-							(more items...)
-					 ]
-				}
-		 ]
-	}
+    {
+        "time": 792,
+        "results": [
+          {
+              "selector": ".title a",
+              "count": 61,
+              "items": [
+                "Ask a Female Engineer: Thoughts on the Google Memo",
+                (more items...)
+              ]
+          }
+        ]
+    }
 
 Parameters:
 
@@ -70,15 +70,15 @@ Parameters:
 
 ### Scrape page content
 
-	http://localhost:3036/api/page?url=https://www.weld.io
+    http://localhost:3036/api/page?url=https://www.weldyourownapp.com
 
 Results:
 
-	{
-		"url": "http://www.tomsoderlund.com",
-		"length": 13560,
-		"content": "<html>...</html>"
-	}
+    {
+      "url": "http://www.tomsoderlund.com",
+      "length": 13560,
+      "content": "<html>...</html>"
+    }
 
 Parameters:
 
@@ -88,51 +88,51 @@ Parameters:
 
 ### Scrape metadata
 
-	http://localhost:3036/api/meta?url=https://www.weld.io
+    http://localhost:3036/api/meta?url=https://www.weldyourownapp.com
 
 Results:
 
-	{
-		"url":"https://www.weld.io",
-		"general":{
-			"appleTouchIcons":[
-				{
-					"href":"/images/apple-touch-icon.png"
-				}
-			],
-			"icons":[
-				{
-					"href":"/images/apple-touch-icon.png"
-				}
-			],
-			"canonical":"http://www.weld.io/",
-			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
-			"title":"Weld - The Visual CMS"
-		},
-		"openGraph":{
-			"site_name":"Weld - The Visual CMS",
-			"title":"Weld - The Visual CMS",
-			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
-			"locale":"en_US",
-			"url":"http://www.weld.io/",
-			"image":{
-				"url":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
-			}
-		},
-		"twitter":{
-			"title":"Weld - The Visual CMS",
-			"description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
-			"card":"summary",
-			"url":"http://www.weld.io/",
-			"site":"@Weld_io",
-			"creator":"@Weld_io",
-			"image":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
-		}
-	}
+    {
+      "url":"https://www.weldyourownapp.com",
+      "general":{
+        "appleTouchIcons":[
+          {
+            "href":"/images/apple-touch-icon.png"
+          }
+        ],
+        "icons":[
+          {
+            "href":"/images/apple-touch-icon.png"
+          }
+        ],
+        "canonical":"http://www.weldyourownapp.com/",
+        "description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+        "title":"Weld - The Visual CMS"
+      },
+      "openGraph":{
+        "site_name":"Weld - The Visual CMS",
+        "title":"Weld - The Visual CMS",
+        "description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+        "locale":"en_US",
+        "url":"http://www.weldyourownapp.com/",
+        "image":{
+          "url":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
+        }
+      },
+      "twitter":{
+        "title":"Weld - The Visual CMS",
+        "description":"Create visual, animated, interactive content on your existing web/e-commerce platform.",
+        "card":"summary",
+        "url":"http://www.weldyourownapp.com/",
+        "site":"@Weld_io",
+        "creator":"@Weld_io",
+        "image":"https://s3-eu-west-1.amazonaws.com/weld-design-kit/weld-logo-square.png"
+      }
+    }
 
 ### Get image
 
-	http://localhost:3036/api/image?url=https://www.weld.io
+    http://localhost:3036/api/image?url=https://www.weldyourownapp.com
 
 * `url` (required)
 * `format`: `jpeg` (default) or `png`
@@ -146,21 +146,24 @@ Results:
 
 Built on Node.js, Express, Puppeteer, Cheerio, html-metadata.
 
+## Deploying on Vercel
 
-## Deploying on Heroku
+See `vercel.json` – set up as serverless API controllers.
+
+## Older: Deploying on Heroku
 
 Stack: **Heroku-18**
 
 Buildpacks:
 
-	1. https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
-	2. heroku/nodejs
+  1. https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
+  2. heroku/nodejs
 
 ### Heroku set-up
 
-	# Set up and configure app
-	heroku create MYAPPNAME
-	heroku config:set NODE_ENV=production
+  # Set up and configure app
+  heroku create MYAPPNAME
+  heroku config:set NODE_ENV=production
 
-	# Stack and Buildpacks
-	heroku buildpacks:add --index 1 https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
+  # Stack and Buildpacks
+  heroku buildpacks:add --index 1 https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz
