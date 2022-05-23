@@ -12,6 +12,7 @@ test('Test /api/dom', function (assert) {
     (results, cb) => { assert.ok(results.body.results[0].count > 0, '1+ items returned'); cb(null, results) }
   ],
   (err, results) => {
+    if (err) console.error(err)
     assert.end()
   }
   )
@@ -25,6 +26,7 @@ test('Test /api/metadata', function (assert) {
     (results, cb) => { assert.ok(results.body.general.title.indexOf('Weld') !== -1, 'Page <title> contains “Weld”'); cb(null, results) }
   ],
   (err, results) => {
+    if (err) console.error(err)
     assert.end()
   }
   )
@@ -39,6 +41,7 @@ test('Test /api/page', function (assert) {
     (results, cb) => { assert.ok(results.body.content.indexOf('Tom Söderlund\'s website') !== -1, 'Page content contains “Tom Söderlund\'s website”'); cb(null, results) }
   ],
   (err, results) => {
+    if (err) console.error(err)
     assert.end()
   }
   )
