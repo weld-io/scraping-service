@@ -31,8 +31,14 @@ const parseDOM = (domString, pageSel, complete, deep) => {
     const $node = $(elem)
     const nodeRef = getElementReference($node)
     // Has children and is not a text node
-    if ($node.children().length > 0 && typeof (obj[nodeRef]) !== 'string') {
+    if (deep || ($node.children().length > 0 && typeof (obj[nodeRef]) !== 'string')) {
       obj[nodeRef] = obj[nodeRef] || {}
+      // Attributes
+      obj[nodeRef].attributes = ['href', 'src'].reduce((result, attr) => {
+        if ($node.attr(attr)) result[attr] = $node.attr(attr)
+        return result
+      }, {})
+      if (Object.keys(obj[nodeRef].attributes).length === 0) delete obj[nodeRef].attributes
       // Has children AND text: use '.$text='
       if ($node.text().length > 0) {
         obj[nodeRef].$text = compactString($node.text())
@@ -50,7 +56,6 @@ const parseDOM = (domString, pageSel, complete, deep) => {
   }
 
   const $ = cheerio.load(domString)
-  console.log('* cheerio.load:\n', $(pageSel), domString.length, '\n END')
   const resultArray = $(pageSel).map(function (i, el) {
     // this === el
     if (complete) {

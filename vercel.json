@@ -2,6 +2,7 @@
   "version": 2,
   "builds": [
     { "src": "app/public/*", "use": "@now/static" },
+    { "src": "app/controllers/api/dom-simple.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
     { "src": "app/controllers/api/dom.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
     { "src": "app/controllers/api/image.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
     { "src": "app/controllers/api/meta.js", "use": "@now/node", "config": { "maxLambdaSize": "40mb" } },
@@ -10,6 +11,7 @@
   "routes": [
     { "src": "/", "dest": "/app/public/index.html" },
     { "src": "/favicon.ico", "dest": "/app/public/favicon.ico" },
+    { "src": "/api/dom-simple?", "dest": "/app/controllers/api/dom-simple.js" },
     { "src": "/api/dom?", "dest": "/app/controllers/api/dom.js" },
     { "src": "/api/scrape?", "dest": "/app/controllers/api/dom.js" },
     { "src": "/api/image?", "dest": "/app/controllers/api/image.js" },

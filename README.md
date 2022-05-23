@@ -24,7 +24,7 @@ Server will default to **http://localhost:3036**
 
 ## Environment variables
 
-* `API`: dom/image/meta/page – for testing only. See /app/controllers/api folder
+* `API`: dom-simple/dom/image/meta/page – for testing only. See /app/controllers/api folder
 * `MAX_BROWSER_THREADS`: default 3 Puppeteer browsers
 * `RENDER_TIMEOUT`: default 20000 millisecs
 * `PORT`: server port
@@ -43,6 +43,10 @@ Server will default to **http://localhost:3036**
 Do a HTTP GET:
 
     http://localhost:3036/api/dom?url=https://news.ycombinator.com&selector=.title+a
+
+or simple with just Fetch:
+
+    http://localhost:3036/api/dom-simple?url=https://news.ycombinator.com&selector=.title+a
 
 Results:
 
