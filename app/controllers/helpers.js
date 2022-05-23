@@ -7,6 +7,8 @@
 'use strict'
 
 const chrome = require('chrome-aws-lambda')
+const { get, compact } = require('lodash')
+const cheerio = require('cheerio')
 const puppeteer = process.env.NODE_ENV === 'production' ? require('puppeteer-core') : require('puppeteer')
 
 const parseRequestParams = url => (url.split('?')[0] || '/').substr(1).split('/')
@@ -19,6 +21,54 @@ const parseRequestQuery = url => (url.split('?')[1] || '')
     return result
   }, {})
 
+const compactString = str => str.replace(/[\n\t]/g, '').replace(/\s+/g, ' ').trim()
+
+const parseDOM = (domString, pageSel, complete, deep) => {
+  // Use _ instead of . and $ instead of # to allow for easier JavaScript parsing
+  const getElementReference = $element => ($element[0].name) + ($element.attr('class') ? '_' + $element.attr('class').replace(/ /g, '_') : '') + ($element.attr('id') ? '$' + $element.attr('id') : '')
+
+  const traverseChildren = function (parentObj, obj, i, elem) {
+    const $node = $(elem)
+    const nodeRef = getElementReference($node)
+    // Has children and is not a text node
+    if ($node.children().length > 0 && typeof (obj[nodeRef]) !== 'string') {
+      obj[nodeRef] = obj[nodeRef] || {}
+      // Has children AND text: use '.$text='
+      if ($node.text().length > 0) {
+        obj[nodeRef].$text = compactString($node.text())
+      }
+      // Traverse the children
+      $node.children().each(traverseChildren.bind(undefined, obj, obj[nodeRef]))
+    } else {
+      // Has only text
+      obj[nodeRef] = compactString($node.text())
+    }
+    // Delete parent.$text if same as this
+    if ($node.text() === get(parentObj, '$text')) {
+      delete parentObj.$text
+    }
+  }
+
+  const $ = cheerio.load(domString)
+  console.log('* cheerio.load:\n', $(pageSel), domString.length, '\n END')
+  const resultArray = $(pageSel).map(function (i, el) {
+    // this === el
+    if (complete) {
+      // Complete DOM nodes
+      return compactString($(this).toString())
+    } else if (deep) {
+      // Deep objects
+      let deepObj = {}
+      traverseChildren(undefined, deepObj, undefined, this)
+      return deepObj
+    } else {
+      // Shallow text
+      return compactString($(this).text())
+    }
+  }).get()
+  return compact(resultArray)
+}
+
 const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnly }) {
   console.log(`Fetch page with Puppeteer: "${pageUrl}"`, { loadExtraTime, bodyOnly })
 
@@ -29,8 +79,7 @@ const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnl
       executablePath: await chrome.executablePath,
       headless: chrome.headless
     })
-  }
-  else {
+  } else {
     browser = await puppeteer.launch({ args: [
       '--disable-dev-shm-usage',
       '--disable-gpu',
@@ -92,6 +141,8 @@ module.exports = {
 
   parseRequestParams,
   parseRequestQuery,
+
+  parseDOM,
 
   fetchPageWithPuppeteer,
   fetchImageWithPuppeteer
