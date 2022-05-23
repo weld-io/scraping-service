@@ -39,6 +39,7 @@ const parseDOM = (domString, pageSel, complete, deep) => {
   }
 
   const $ = cheerio.load(domString)
+  console.log('* cheerio.load:\n', $(pageSel), domString, '\n END')
   const resultArray = $(pageSel).map(function (i, el) {
     // this === el
     if (complete) {
