@@ -13,12 +13,12 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.11",
-    "chrome-aws-lambda": "^10.1.0",
-    "html-metadata": "^1.7.0",
-    "lodash": "^4.17.11",
-    "node-fetch": "2",
-    "puppeteer-core": "^14.1.1"
+    "@sparticuz/chromium": "119",
+    "cheerio": "^1.0.0-rc.12",
+    "html-metadata": "^1.7.1",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "puppeteer-core": "^21.7.0"
   },
   "devDependencies": {
     "async": "^2.5.0",

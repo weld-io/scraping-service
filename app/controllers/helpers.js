@@ -6,7 +6,7 @@
 
 'use strict'
 
-const chrome = require('chrome-aws-lambda')
+const chrome = require('@sparticuz/chromium')
 const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
 const puppeteer = process.env.NODE_ENV === 'production' ? require('puppeteer-core') : require('puppeteer')
