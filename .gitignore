@@ -2,3 +2,4 @@ node_modules/
 
 cli/input.txt
 cli/output.tsv
+.vercel
