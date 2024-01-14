@@ -13,13 +13,13 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "@sparticuz/chromium": "119.0.2",
+    "@sparticuz/chromium": "^119.0.2",
     "cheerio": "^1.0.0-rc.12",
     "follow-redirects": "^1.15.5",
     "html-metadata": "^1.7.1",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "puppeteer-core": "21.5.1"
+    "puppeteer-core": "^21.5.1"
   },
   "devDependencies": {
     "async": "^2.5.0",
