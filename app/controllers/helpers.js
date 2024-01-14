@@ -6,7 +6,7 @@
 
 'use strict'
 
-const chrome = require('@sparticuz/chromium')
+const chromium = require('@sparticuz/chromium')
 const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
 const puppeteer = process.env.NODE_ENV === 'production' ? require('puppeteer-core') : require('puppeteer')
@@ -80,9 +80,9 @@ const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnl
   let browser
   if (process.env.NODE_ENV === 'production') {
     browser = await puppeteer.launch({
-      args: chrome.args,
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless
+      args: chromium.args,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless
     })
   } else {
     browser = await puppeteer.launch({ args: [
@@ -121,9 +121,9 @@ const fetchImageWithPuppeteer = async function (pageUrl, { loadExtraTime, format
   console.log(`Fetch image with Puppeteer: "${pageUrl}"`, { loadExtraTime, format, width, height, dpr })
 
   const browser = await puppeteer.launch({
-    args: chrome.args,
-    executablePath: await chrome.executablePath,
-    headless: chrome.headless
+    args: chromium.args,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless
   })
   const page = await browser.newPage()
   await page.setViewport({ width, height, deviceScaleFactor: dpr, isMobile: false })
