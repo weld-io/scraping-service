@@ -21,7 +21,7 @@ const scrapePage = async function (req, res) {
     const completeResults = query.complete || false
     const timeStart = Date.now()
 
-    console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
+    console.log(`Scrape DOM (simple): "${pageUrl}"`, { pageSelector, loadExtraTime })
 
     const documentResponse = await fetch(pageUrl)
     const documentHTML = await documentResponse.text()
