@@ -81,19 +81,23 @@ const fetchPageWithPuppeteer = async function (pageUrl, { loadExtraTime, bodyOnl
   if (process.env.NODE_ENV === 'production') {
     browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: 'new',
+      ignoreHTTPSErrors: true
     })
   } else {
-    browser = await puppeteer.launch({ args: [
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--disable-setuid-sandbox',
-      '--headless',
-      '--no-sandbox',
-      '--single-process'
-    ],
-    ignoreHTTPSErrors: true })
+    browser = await puppeteer.launch({
+      args: [
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-setuid-sandbox',
+        '--headless',
+        '--no-sandbox',
+        '--single-process'
+      ],
+      ignoreHTTPSErrors: true
+    })
   }
 
   const page = await browser.newPage()
