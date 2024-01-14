@@ -11,13 +11,14 @@ Made by the team at **Weld** ([www.weldyourownapp.com](https://www.weldyourownap
 
 ## How to Run
 
-Start Scraping Service with:
+Start Scraping Service in development mode:
 
-    API=dom yarn dev # development
+    API=dom yarn dev
+    # you can replace `dom` with: dom-simple (just fetch, no Chromium), image, meta, page
 
-or
+or in production mode:
 
-    yarn start # production
+    yarn start
 
 Server will default to **http://localhost:3036**
 
