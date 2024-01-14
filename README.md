@@ -1,6 +1,6 @@
-# Scraping Service
+# Scraping Service (serverless)
 
-**Scraping Service** is a REST API for scraping dynamic websites using Node.js, Puppeteer and Cheerio.
+**Scraping Service** is a REST API for scraping dynamic websites using Node.js, Puppeteer and Cheerio. It works in serverless environments such as Vercel.
 
 ----------
 
