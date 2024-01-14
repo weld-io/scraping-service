@@ -6,7 +6,7 @@
 
 'use strict'
 
-const chromium = require('@sparticuz/chromium')
+const chromium = require('@sparticuz/chromium-min')
 const { get, compact } = require('lodash')
 const cheerio = require('cheerio')
 const puppeteer = process.env.NODE_ENV === 'production' ? require('puppeteer-core') : require('puppeteer')

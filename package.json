@@ -13,7 +13,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^119.0.2",
+    "@sparticuz/chromium-min": "^119.0.2",
     "cheerio": "^1.0.0-rc.12",
     "follow-redirects": "^1.15.5",
     "html-metadata": "^1.7.1",

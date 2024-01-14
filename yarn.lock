@@ -29,10 +29,10 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.2"
 
-"@sparticuz/chromium@^119.0.2":
+"@sparticuz/chromium-min@^119.0.2":
   version "119.0.2"
-  resolved "https://registry.yarnpkg.com/@sparticuz/chromium/-/chromium-119.0.2.tgz#cbdf57fb99ba04d8136059004f5cae1d225cf3ae"
-  integrity sha512-VB6tHW13YpQ7HqyhKG1KU8Z1RIb/kfHMg8j/4ft5rk8mMvEm2YkBYFCHnj+yb0P/RPLcdgX3+VC58GuJilOtww==
+  resolved "https://registry.yarnpkg.com/@sparticuz/chromium-min/-/chromium-min-119.0.2.tgz#339ccc9492887f520c1ceb5316fd00398c17b4d8"
+  integrity sha512-66ztqT2MScSzbK3Jv6tViEqc2prgKLOX2lst2l89GlKl64Y4Mh72ZlEppjkXybjAVNb1B5IqFVtq67t++En9kA==
   dependencies:
     follow-redirects "^1.15.3"
     tar-fs "^3.0.4"
