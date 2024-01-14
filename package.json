@@ -12,6 +12,9 @@
     "lint": "standard",
     "fix": "standard --fix"
   },
+  "engines": {
+    "node": "18"
+  },
   "dependencies": {
     "@sparticuz/chromium": "92.0.0",
     "cheerio": "^1.0.0-rc.12",
