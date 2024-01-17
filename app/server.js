@@ -1,4 +1,4 @@
-// Just a test server for development, not used by Now hosting
+// Just a test server for development, not used by Vercel hosting
 const { createServer } = require('http')
 const PORT = process.env.PORT || 3036
 // dom-simple/dom/image/meta/page – See /app/controllers/api folder
