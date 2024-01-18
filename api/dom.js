@@ -1,13 +1,12 @@
 //
-// Name:    dom-simple.js
-// Purpose: Controller for pure-fetch (no-Puppeteer) scraping
+// Name:    scrape.js
+// Purpose: Controller and routing for scraping
 // Creator: Tom Söderlund
 //
 
 'use strict'
 
-const fetch = require('node-fetch')
-const { parseRequestQuery, parseDOM } = require('../helpers')
+const { parseRequestQuery, parseDOM, fetchPageWithPuppeteer } = require('../lib/helpers')
 
 const scrapePage = async function (req, res) {
   try {
@@ -21,10 +20,9 @@ const scrapePage = async function (req, res) {
     const completeResults = query.complete || false
     const timeStart = Date.now()
 
-    console.log(`Scrape DOM (simple): "${pageUrl}"`, { pageSelector, loadExtraTime })
+    console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
 
-    const documentResponse = await fetch(pageUrl)
-    const documentHTML = await documentResponse.text()
+    const documentHTML = await fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
     const selectorsArray = pageSelector.split(',')
     const resultsObj = selectorsArray.map(selector => {
       const items = parseDOM(documentHTML, selector, completeResults, deepResults)

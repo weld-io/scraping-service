@@ -4,10 +4,10 @@
   "description": "Scraping Service is a REST API for scraping dynamic websites using Node.js, Puppeteer and Cheerio.",
   "author": "Weld (www.weld.io)",
   "license": "MIT",
-  "main": "app/server.js",
+  "main": "test/server.js",
   "scripts": {
-    "dev": "nodemon --max_old_space_size=512 app/server.js",
-    "start": "node app/server.js",
+    "dev": "nodemon --max_old_space_size=512 test/server.js",
+    "start": "node test/server.js",
     "test": "node test/app.js",
     "lint": "standard",
     "fix": "standard --fix"

@@ -6,7 +6,7 @@
 
 'use strict'
 
-const { parseRequestQuery, fetchPageWithPuppeteer } = require('../helpers')
+const { parseRequestQuery, fetchPageWithPuppeteer } = require('../lib/helpers')
 
 const scrapePageContent = async function (req, res) {
   try {

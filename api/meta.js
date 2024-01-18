@@ -8,7 +8,7 @@
 
 const { includes, merge } = require('lodash')
 const htmlMetadata = require('html-metadata')
-const { parseRequestQuery } = require('../helpers')
+const { parseRequestQuery } = require('../lib/helpers')
 
 const scrapeMetaData = async function (req, res) {
   try {

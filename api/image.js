@@ -6,7 +6,7 @@
 
 'use strict'
 
-const { parseRequestQuery, fetchImageWithPuppeteer } = require('../helpers')
+const { parseRequestQuery, fetchImageWithPuppeteer } = require('../lib/helpers')
 
 const getImage = async function (req, res) {
   try {
