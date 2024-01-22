@@ -22,7 +22,7 @@ const scrapePage = async function (req, res) {
 
     console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
 
-    const documentHTML = await fetchPageWithPuppeteer(pageUrl, { loadExtraTime, bodyOnly: true })
+    const documentHTML = await fetchPageWithPuppeteer(pageUrl, { waitForSelector: pageSelector, loadExtraTime, bodyOnly: true })
     const selectorsArray = pageSelector.split(',')
     const resultsObj = selectorsArray.map(selector => {
       const items = parseDOM(documentHTML, selector, completeResults, deepResults)
