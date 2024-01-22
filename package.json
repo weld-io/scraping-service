@@ -10,12 +10,13 @@
   "license": "MIT",
   "dependencies": {
     "@sparticuz/chromium": "^119.0.2",
+    "cheerio": "1.0.0-rc.12",
+    "lodash": "^4.17.21",
     "puppeteer-core": "^21.5.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
     "typescript": "^5.3.3"
-    
   },
   "engines": {
     "node": "18"
