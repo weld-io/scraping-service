@@ -6,7 +6,7 @@
 
 'use strict'
 
-const fetch = require('node-fetch')
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args))
 const { parseRequestQuery, parseDOM } = require('../lib/helpers')
 
 const scrapePage = async function (req, res) {
