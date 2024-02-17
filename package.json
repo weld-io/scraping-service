@@ -1,13 +1,17 @@
 {
-  "name": "vercelgl",
-  "version": "1.0.0",
+  "name": "scraping-service",
+  "version": "2.0.0",
   "description": "",
   "scripts": {
+    "dev": "node test/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Viki Val",
+  "author": "Tom Söderlund",
   "license": "MIT",
+  "engines": {
+    "node": "18"
+  },
   "dependencies": {
     "@sparticuz/chromium": "^119.0.2",
     "cheerio": "1.0.0-rc.12",
@@ -17,8 +21,5 @@
   "devDependencies": {
     "@types/node": "^20.10.6",
     "typescript": "^5.3.3"
-  },
-  "engines": {
-    "node": "18"
   }
 }
