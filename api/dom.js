@@ -18,6 +18,7 @@ const scrapePage = async function (req, res) {
     const loadExtraTime = query.time || 3000
     const deepResults = query.deep || false
     const completeResults = query.complete || false
+    const useIndex = query.useIndex || false
     const timeStart = Date.now()
 
     console.log(`Scrape DOM: "${pageUrl}"`, { pageSelector, loadExtraTime })
@@ -25,7 +26,7 @@ const scrapePage = async function (req, res) {
     const documentHTML = await fetchPageWithPuppeteer(pageUrl, { waitForSelector: pageSelector, loadExtraTime, bodyOnly: true })
     const selectorsArray = pageSelector.split(',')
     const resultsObj = selectorsArray.map(selector => {
-      const items = parseDOM(documentHTML, selector, completeResults, deepResults)
+      const items = parseDOM(documentHTML, selector, completeResults, deepResults, useIndex)
       return { selector, count: items.length, items }
     })
     const timeFinish = Date.now()

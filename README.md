@@ -72,6 +72,7 @@ Parameters:
 * `time` e.g. `time=2000` adds extra loading time before accessing DOM. Use `time=networkidle0` to wait until network requests are idle.
 * `deep` set to `true` to get recursive object trees, not just first-level text contents.
 * `complete` set to `true` to get complete HTML tags, not just text contents.
+* `useIndex` set to `true` to use element index instead of class/id.
 
 ### Scrape page content
 
