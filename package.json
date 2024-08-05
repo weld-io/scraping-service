@@ -3,8 +3,7 @@
   "version": "2.0.0",
   "description": "",
   "scripts": {
-    "dev": "node test/server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "echo '\n** NOTE: using PNPM not Yarn/NPM **\n'; node test/server"
   },
   "keywords": [],
   "author": "Tom Söderlund",
