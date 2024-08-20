@@ -105,7 +105,7 @@ export default async (req: any, res: any) => {
 
   await browser.close()
   // Set the s-maxage property which caches the images then on the Vercel edge
-  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate')
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate')
   res.setHeader('Content-Type', 'image/png')
   // CORS
   // res.setHeader('Access-Control-Allow-Headers', '*')
